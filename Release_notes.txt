@@ -1,0 +1,124 @@
+EZOpenSDK V4.5.1 build20170721 for Android更新内容：
+1、修复log信息中播放失败回调错误信息显示错误的bug；
+2、修复release版本log信息仍然部分输出的bug；
+3、修复0通道预览失败bug；
+
+
+EZOpenSDK V4.5.0 build20170605 for Android更新内容：
+1.修复N1W多个挂载多个设备回放错乱问题
+2.登录页接口可以传入falg，页面跳转flag 类似Intent.FLAG_ACTIVITY_CLEAR_TOP
+3.新增清除SDK内部缓存数据接口clearStreamInfoCache()；
+4.优化取流流程
+5.已知Bug修复
+
+
+
+4.Bug修复
+
+
+
+EZOpenSDK V4.4.0 build20170320 for Android更新内容：
+1.通道信息EZCameraInfo类中新增通道支持的清晰度列表
+2.报警消息EZAlarmInfo类中新增报警视频存储位置标识
+3.优化取流流程
+4.Bug修复
+
+
+
+EZOpenSDK V4.3.0 build20161215 for Android 更新内容：
+1、SDK全面支持多通道p2p，有控制开关接口，省流量，从p2p做起；
+2、新增获取单个设备信息接口getDeviceInfo；
+3、startConfigWifi开始配置wifi接口优化参数变更，详见javadoc文档
+4、controlVideoFlip，此接口返回值修改为void，操作失败会抛出异常，错误码 exception.getErrorCode；详见javadoc
+5、新增获取设备识别码接口：getTerminalId
+6、libopensslwrap.so有更新
+7、修复部分bug；
+
+EZOpenSDK V4.3.0 build20161215 for Android 更新内容：
+1、SDK全面支持多通道p2p，有控制开关接口，省流量，从p2p做起；
+2、新增获取单个设备信息接口getDeviceInfo；
+3、startConfigWifi开始配置wifi接口优化参数变更，详见javadoc文档
+4、controlVideoFlip，此接口返回值修改为void，操作失败会抛出异常，错误码 exception.getErrorCode；详见javadoc
+5、新增获取设备识别码接口：getTerminalId
+6、libopensslwrap.so有更新
+7、修复部分bug；
+
+
+EZOpenSDK V4.2.0 build20161019 for Android 更新内容：
+1.SDK全面支持p2p，有控制开关接口，省流量，从p2p做起；
+2、修复部分bug；
+3.全面修改不合理的接口设计，对接更加轻松，老版本用户请关注FYI:4.2;
+
+FYI：4.2
+A、接口对象更新记录：
+ EZOpenSDK：开放平台总接口类：
+新增 setVideoLevel设置指定监控点视频清晰度，播放过程中如果要切换清晰度需要用户调用该接口成功以后stopRealPlay再startRealPlay即可完成清晰度切换，详见api；
+新增 getSharedDeviceList获取好友分享的设备列表，详见api；
+修改createPlayer接口参数，详见api；
+修改 createPlayerWithUrl接口参数，详见api；
+修改接口getAlarmList，去除getAlarmListBySerial接口；
+修改searchRecordFileFromCloud接口参数，详见api；
+修改searchRecordFileFromDevice接口参数，详见api；
+修改controlPTZ接口参数，详见api；
+修改controlDisplay，替换为 controlVideoFlip，详见api；
+设置布防状态接口统一使用setDefence，同时使其兼容IPC和非IPC设备的布撤防功能，详见api；
+获取设备实时图片接口capturePicture、getRealPicture统一后接口名为captureCamera；
+接口setDeviceEncryptStatus和setDeviceEncryptStatusEx合并统一接口名setDeviceEncryptStatus，同时修改参数顺序为deviceSerial、validateCode、encrypt，详见api；
+去除接口getCameraList、getDetectorList，在接口getDeviceList返回EZDeviceInfo中有通道和探测器列表，详见api；
+去除getDeviceInfo、getCameraInfo、getDeviceInfoBySerial、getTransferMessageInfo、getStreamLimitInfo、createPlayerWithDeviceSerial、openAddDevicePage、openSettingDevicePage、transferAPI、getOpenEzvizServiceSMSCode、              openEzvizService接口，去除视频广场相关接口；
+去除获取验证短信相关接口getSmsCode、 secureSmsValidate、validateSecureSMSCode；
+去除获取和传入设备验证码接口： setValidateCode和  getValidateCode；
+开启推送服务接口 startPushService(Context context, String pushSecret, EZOpenSDKListener.EZPushServerListener pushServerListener) 修改为initPushService(Context context, String pushSecret, EZOpenSDKListener.EZPushServerListener                  pushServerListener)初始化推送服务，详见api文档以及推送对接文档；
+新增startPushService() 和 stopPushService() 接口，用于手动开启关闭推送，主要应用在app设置中推送开启关闭的切换；
+EZPlayer：播放器接口主类
+构造方法修改、优化，详见api；
+传入视频加密密码，用于加密视频的解码，接口由 setPlayKey 修改为setPlayVerifyCode ，视频播放时，需要输入验证码，旧版本在sdk弹输入框的，开发者改不了ui，而且在sdk中也不适合做ui层的工作。本版本将弹框放到app层了，开始播放之后在消             息回调中如果收到播放错误的回调，然后查看errorCode，如果为ErrorCode.ERROR_INNER_VERIFYCODE_NEED或者ErrorCode.ERROR_INNER_VERIFYCODE_ERROR则为验证密码错误，需要开发者自己处理弹框让用户重新输入验证密码，然后               调用 setPlayVerifyCode设置密码，然后重新启动播放。
+新增获取留言数据接口  getLeaveMessageData，详见api；
+新增设置留言下载回调接口setLeaveMessageFlowCallback，详见api；
+EZDeviceInfo：设备信息对象
+对象属性字段发生改变，详见api
+  EZCameraInfo: 通道信息对象
+封面  mPicUrl 修改为     cameraCover 字段，对应方法修改为getCameraCover()， setCameraCover(String cameraCover) ；
+去掉mCameraId、mDeviceId、mOnlineStatus、mEncryptStatus、mDefence字段，以及对应get，set方法。如有用到需要到对应的EZDeviceInfo中获取；
+去掉mDisplayStatus字段，以及对应get，set方法；
+修改getVideoLevel()返回值为EZConstants.EZVideoLevel枚举值，详见api文档；
+mShareStatus 修改为 isShared; 对应方法修改为setIsShared(int isShared)，getIsShared()；
+mChannelNo  修改为 cameraNo; 对应方法修改为    getCameraNo()，setCameraNo(int cameraNo) ；
+EZDetectorInfo：探测器类对象
+新增 detectorState 字段，表述探测器与报警主机是否连通，0-非联通，1-联通，对应get，set方法获取设置；
+新增atHomeEnable、outerEnable、sleepEnable 字段，分别对应 在家模式下、外出模式下、睡眠模式下探测器是否布防，对应get，set方法获取设置。
+  EZDeviceRecordFile：设备录像文件信息
+对象属性字段发生改变，详见api
+ EZAlarmInfo：报警信息对象
+channelNo修改为cameraNo通道号，修改对应的get，set方法；
+图片是否加密字段使用int型， 0:未加密； 1:已加密，对应setIsEncrypt(int isEncrypt)，   getIsEncrypt()；
+去掉 deviceName、checkSum，以及对应的get、set方法。
+ EZDeviceVersion：设备版本信息对象
+去掉所有set方法
+EZLeaveMessage：留言消息对象
+去掉channelNo，以及对应的set，get方法。
+EZProbeDeviceInfo：查询设备信息对象（设备添加前使用）
+对象属性字段发生改变，详见api
+ EZUserInfo ：用户信息对象
+所有set方法不对外开放；
+B、so库jar包更新记录–updateFrom 3.4.4:
+libAudioEngine.so、libCpuFeatures.so、libgnustl_shared.so、libhpr.so、libopensslwrap.so、libPlayCtrl.so、libPlayCtrl_v5.so、libPlayCtrl_v7.so、libstreamconvert.so、libSystemTransform.so有修改，需要替换；
+新增libAnalyzeData.so、libminiupnpc.so、libext2_uuid.so、libezstreamclient.so库文件；
+去掉libCASClientSDK.so、libcrypto.so、libPPVClientSDK.so、libRtspClientSDK.so、libssl.so、libStreamClientSDK.so、libTTSClientSDK.so库文件
+
+C、so库jar包更新记录–updateFrom 4.1:
+ libAudioEngine.so、 libezstreamclient.so、libgnustl_shared.so、libopensslwrap.so、libPlayCtrl.so、libPlayCtrl_v5.so、libPlayCtrl_v7.so、libstreamconvert.so、libSystemTransform.so有修改，需要替换；
+ 新增libminiupnpc.so库文件。
+D、功能优化：
+优化对讲的效果和稳定性；
+修复已知的bug和性能优化。
+E、Manifest：
+         请检查应用是否有定义此权限，如果有请检查下面红色部分是否为自己app的包名，如果不是请修改为自己的包名，否则有可能与其他app冲突导致无法安装
+<!-- Creates a custom permission so only this app can receive its messages. NOTE: APP_PACKAGE.permission.C2D_MESSAGE -->
+<permission
+    android:name="com.videogo.open.permission.C2D_MESSAGE"
+    android:protectionLevel="signature"/>
+<!-- This app has permission to register and receive data message. -->
+<uses-permission android:name="com.google.android.c2dm.permission.RECEIVE"/>
+<!-- Creates a custom permission so only this app can receive its messages. NOTE: APP_PACKAGE.permission.C2D_MESSAGE -->
+<uses-permission android:name="com.videogo.open.permission.C2D_MESSAGE"/>
