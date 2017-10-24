@@ -15,11 +15,13 @@ import android.graphics.Rect;
 import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.os.SystemClock;
+import android.support.v4.content.LocalBroadcastManager;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
@@ -52,7 +54,6 @@ import android.widget.RelativeLayout.LayoutParams;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.videogo.EzvizApplication;
 import com.videogo.constant.Config;
 import com.videogo.constant.Constant;
 import com.videogo.constant.IntentConsts;
@@ -65,8 +66,10 @@ import com.videogo.openapi.EZConstants.EZPTZAction;
 import com.videogo.openapi.EZConstants.EZPTZCommand;
 import com.videogo.openapi.EZConstants.EZRealPlayConstants;
 import com.videogo.openapi.EZConstants.EZVideoLevel;
+import com.videogo.openapi.EZOpenSDK;
 import com.videogo.openapi.EZOpenSDKListener;
 import com.videogo.openapi.EZPlayer;
+import com.videogo.openapi.EzvizAPI;
 import com.videogo.openapi.bean.EZCameraInfo;
 import com.videogo.openapi.bean.EZDeviceInfo;
 import com.videogo.realplay.RealPlayStatus;
@@ -92,17 +95,23 @@ import com.videogo.widget.RingView;
 import com.videogo.widget.TitleBar;
 import com.videogo.widget.WaitDialog;
 import com.videogo.widget.loading.LoadingTextView;
+import com.videogo.EzvizApplication;
+import static com.videogo.EzvizApplication.getOpenSDK;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.HashMap;
+import java.util.Map;
 
 import ezviz.ezopensdk.R;
+
 
 /**
  * 实时预览2.7
@@ -466,23 +475,23 @@ public class EZRealPlayActivity extends Activity implements OnClickListener, Sur
         mScreenOrientationHelper = null;
     }
 
-   private void  exit(){
-       closePtzPopupWindow();
-       closeTalkPopupWindow(true, false);
-       if (mStatus != RealPlayStatus.STATUS_STOP) {
-           stopRealPlay();
-           setRealPlayStopUI();
-       }
-       mHandler.removeMessages(MSG_AUTO_START_PLAY);
-       mHandler.removeMessages(MSG_HIDE_PTZ_DIRECTION);
-       mHandler.removeMessages(MSG_CLOSE_PTZ_PROMPT);
-       mHandler.removeMessages(MSG_HIDE_PAGE_ANIM);
-       if (mBroadcastReceiver != null) {
-           // 取消锁屏广播的注册
-           unregisterReceiver(mBroadcastReceiver);
-           mBroadcastReceiver = null;
-       }
-       finish();
+    private void  exit(){
+        closePtzPopupWindow();
+        closeTalkPopupWindow(true, false);
+        if (mStatus != RealPlayStatus.STATUS_STOP) {
+            stopRealPlay();
+            setRealPlayStopUI();
+        }
+        mHandler.removeMessages(MSG_AUTO_START_PLAY);
+        mHandler.removeMessages(MSG_HIDE_PTZ_DIRECTION);
+        mHandler.removeMessages(MSG_CLOSE_PTZ_PROMPT);
+        mHandler.removeMessages(MSG_HIDE_PAGE_ANIM);
+        if (mBroadcastReceiver != null) {
+            // 取消锁屏广播的注册
+            unregisterReceiver(mBroadcastReceiver);
+            mBroadcastReceiver = null;
+        }
+        finish();
     }
 
     @Override
@@ -543,6 +552,61 @@ public class EZRealPlayActivity extends Activity implements OnClickListener, Sur
         }
         if (mDeviceInfo != null && mDeviceInfo.getIsEncrypt() == 1) {
             mVerifyCode = DataManager.getInstance().getDeviceSerialVerifyCode(mCameraInfo.getDeviceSerial());
+        }
+
+
+        new getDeviceInfo(this).execute();
+    }
+
+    private class getDeviceInfo extends AsyncTask<Void, Void, EZDeviceInfo> {
+        private Context context;
+        getDeviceInfo(Context context) {
+            this.context = context;
+        }
+
+        @Override
+        protected EZDeviceInfo doInBackground(Void... params) {
+            try {
+                EZDeviceInfo deviceInfo = getOpenSDK().getDeviceInfo(mDeviceInfo.getDeviceSerial());
+                EZCameraInfo cameraInfo = EZUtils.getCameraInfoFromDevice(deviceInfo, 0);
+
+                int videoLevel = cameraInfo.getVideoLevel().getVideoLevel();
+                int defence = deviceInfo.getDefence();
+                int isEncrypt = deviceInfo.getIsEncrypt();
+                int isShared = cameraInfo.getIsShared();
+                int status = deviceInfo.getStatus();
+                int cameraNo = cameraInfo.getCameraNo();
+                String picUrl = cameraInfo.getCameraCover();
+                String cameraName = cameraInfo.getCameraName();
+                String deviceName = deviceInfo.getDeviceName();
+                String deviceSerial = deviceInfo.getDeviceSerial();
+
+                final Intent intent2 = new Intent("completionButtonClicked");
+
+                String result = "{deviceSerial:" + deviceSerial + ","
+                        + "deviceName:" + deviceName + ","
+                        + "cameraName:" + cameraName + ","
+                        + "picUrl:" + picUrl + ","
+                        + "cameraNo:" + cameraNo + ","
+                        + "status:" + status + ","
+                        + "isShared:" + isShared + ","
+                        + "isEncrypt:" + isEncrypt + ","
+                        + "defence:" + defence + ","
+                        + "videoLevel:" + videoLevel + "}";
+                Bundle b = new Bundle();
+                b.putString("data", result);
+                intent2.putExtras(b);
+
+                LocalBroadcastManager.getInstance(context).sendBroadcastSync(intent2);
+                return null;
+            } catch (BaseException e) {
+                e.printStackTrace();
+
+                ErrorInfo errorInfo = (ErrorInfo) e.getObject();
+                LogUtil.debugLog(TAG, errorInfo.toString());
+
+                return null;
+            }
         }
     }
 
@@ -619,6 +683,8 @@ public class EZRealPlayActivity extends Activity implements OnClickListener, Sur
         mFullScreenTitleBarBackBtn = new CheckTextButton(this);
         mFullScreenTitleBarBackBtn.setBackground(getResources().getDrawable(R.drawable.common_title_back_selector));
         mLandscapeTitleBar.addLeftView(mFullScreenTitleBarBackBtn);
+
+
     }
 
     private void initRealPlayPageLy() {
@@ -1583,6 +1649,18 @@ public class EZRealPlayActivity extends Activity implements OnClickListener, Sur
             public void run() {
                 boolean ptz_result = false;
                 try {
+//                    //参数
+//                    Map<String,String> params = new HashMap<String,String>();
+//                    params.put("accessToken", EzvizAPI.getInstance().getAccessToken());
+//                    params.put("deviceSerial", mCameraInfo.getDeviceSerial());
+//                    params.put("channelNo", String.valueOf(mCameraInfo.getCameraNo()));
+//                    params.put("direction", "1");
+//                    params.put("speed", "2");
+//
+//                    //服务器请求路径
+//                    String strUrlPath = "https://open.ys7.com/api/lapp/device/ptz/start";
+//                    String strResult=HttpUtils.submitPostData(strUrlPath,params, "utf-8");
+
                     ptz_result = EzvizApplication.getOpenSDK().controlPTZ(mCameraInfo.getDeviceSerial(), mCameraInfo.getCameraNo(), command,
                             action, EZConstants.PTZ_SPEED_DEFAULT);
                 } catch (BaseException e) {

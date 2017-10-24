@@ -12,6 +12,7 @@ import android.net.wifi.WifiManager.MulticastLock;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.os.Parcelable;
 import android.text.InputFilter;
 import android.text.TextUtils;
 import android.text.method.PasswordTransformationMethod;
@@ -25,6 +26,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.support.v4.content.LocalBroadcastManager;
 
 import com.hikvision.wifi.configuration.DeviceInfo;
 import com.videogo.EzvizApplication;
@@ -36,9 +38,14 @@ import com.videogo.errorlayer.ErrorInfo;
 import com.videogo.exception.BaseException;
 import com.videogo.exception.ErrorCode;
 import com.videogo.openapi.EZConstants;
+import com.videogo.openapi.EZOpenSDK;
 import com.videogo.openapi.EZOpenSDKListener;
+import com.videogo.openapi.bean.EZCameraInfo;
+import com.videogo.openapi.bean.EZDeviceInfo;
 import com.videogo.openapi.bean.EZProbeDeviceInfo;
+import com.videogo.openapi.EZConstants.EZVideoLevel;
 import com.videogo.ui.cameralist.EZCameraListActivity;
+import com.videogo.ui.util.EZUtils;
 import com.videogo.util.ConnectionDetector;
 import com.videogo.util.LocalInfo;
 import com.videogo.util.LogUtil;
@@ -780,12 +787,52 @@ public class AutoWifiConnectingActivity extends RootActivity implements OnClickL
      * @since V1.8.2
      */
     private void finishOnClick() {
-        // 云存储开关,设备不在线或是不是最新的设备或是用户没有开启云存储服务是看不到这个控件的
-        if (llyCloundService.getVisibility() == View.VISIBLE && ckbCloundService.isChecked()) {
-            enableCloudStoryed();
-        } else {
-            closeActivity();
+
+        try {
+            EZDeviceInfo deviceInfo = EZOpenSDK.getInstance().getDeviceInfo(serialNo);
+            EZCameraInfo cameraInfo = EZUtils.getCameraInfoFromDevice(deviceInfo, 0);
+
+            EZVideoLevel videoLevel = cameraInfo.getVideoLevel();
+            int defence = deviceInfo.getDefence();
+            int isEncrypt = deviceInfo.getIsEncrypt();
+            int isShared = cameraInfo.getIsShared();
+            int status = deviceInfo.getStatus();
+            int cameraNo = cameraInfo.getCameraNo();
+            String picUrl = cameraInfo.getCameraCover();
+            String cameraName = cameraInfo.getCameraName();
+            String deviceName = deviceInfo.getDeviceName();
+            String deviceSerial = deviceInfo.getDeviceSerial();
+
+            final Intent intent = new Intent("completionButtonClicked");
+
+            String result = "{deviceSerial:" + deviceSerial + ","
+                    + "deviceName:" + deviceName + ","
+                    + "cameraName:" + cameraName + ","
+                    + "picUrl:" + picUrl + ","
+                    + "cameraNo:" + cameraNo + ","
+                    + "status:" + status + ","
+                    + "isShared:" + isShared + ","
+                    + "isEncrypt:" + isEncrypt + ","
+                    + "defence:" + defence + ","
+                    + "videoLevel:" + videoLevel + "}";
+            Bundle b = new Bundle();
+            b.putString( "data", result );
+            intent.putExtras(b);
+
+            LocalBroadcastManager.getInstance(this).sendBroadcastSync(intent);
+
+        }catch (BaseException e) {
+            e.printStackTrace();
+
+            ErrorInfo errorInfo = (ErrorInfo) e.getObject();
+            LogUtil.debugLog(TAG, errorInfo.toString());
         }
+//        // 云存储开关,设备不在线或是不是最新的设备或是用户没有开启云存储服务是看不到这个控件的
+//        if (llyCloundService.getVisibility() == View.VISIBLE && ckbCloundService.isChecked()) {
+//            enableCloudStoryed();
+//        } else {
+//            closeActivity();
+//        }
     }
 
     /**

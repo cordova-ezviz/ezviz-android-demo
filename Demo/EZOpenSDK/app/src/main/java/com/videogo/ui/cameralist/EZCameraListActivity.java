@@ -40,6 +40,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.support.v4.content.LocalBroadcastManager;
 
 import com.videogo.constant.Constant;
 import com.videogo.constant.IntentConsts;
@@ -374,6 +375,24 @@ public class EZCameraListActivity extends Activity implements OnClickListener, S
         IntentFilter filter = new IntentFilter();
         filter.addAction(Constant.ADD_DEVICE_SUCCESS_ACTION);
         registerReceiver(mReceiver, filter);
+
+
+        LocalBroadcastManager local = LocalBroadcastManager.getInstance(this);
+        MyBoardReceiver broad = new MyBoardReceiver();
+        IntentFilter initte = new IntentFilter();
+        initte.addAction("completionBUttonClicked");
+        local.registerReceiver(broad, initte);
+    }
+
+    private class MyBoardReceiver extends BroadcastReceiver{
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            if(action.equals("completionButtonClicked")) {
+
+                final Intent intent1 = new Intent();
+            }
+        }
     }
 
     @Override
