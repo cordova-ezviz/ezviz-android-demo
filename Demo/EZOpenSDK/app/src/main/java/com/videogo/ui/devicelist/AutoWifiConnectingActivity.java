@@ -9,6 +9,7 @@ import android.graphics.drawable.AnimationDrawable;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.net.wifi.WifiManager.MulticastLock;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -55,6 +56,8 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import ezviz.ezopensdk.R;
+
+import static com.videogo.EzvizApplication.getOpenSDK;
 
 /**
  * 一键添加摄像头界面
@@ -788,51 +791,66 @@ public class AutoWifiConnectingActivity extends RootActivity implements OnClickL
      */
     private void finishOnClick() {
 
-        try {
-            EZDeviceInfo deviceInfo = EZOpenSDK.getInstance().getDeviceInfo(serialNo);
-            EZCameraInfo cameraInfo = EZUtils.getCameraInfoFromDevice(deviceInfo, 0);
+        new getDeviceInfo(this).execute();
 
-            EZVideoLevel videoLevel = cameraInfo.getVideoLevel();
-            int defence = deviceInfo.getDefence();
-            int isEncrypt = deviceInfo.getIsEncrypt();
-            int isShared = cameraInfo.getIsShared();
-            int status = deviceInfo.getStatus();
-            int cameraNo = cameraInfo.getCameraNo();
-            String picUrl = cameraInfo.getCameraCover();
-            String cameraName = cameraInfo.getCameraName();
-            String deviceName = deviceInfo.getDeviceName();
-            String deviceSerial = deviceInfo.getDeviceSerial();
-
-            final Intent intent = new Intent("completionButtonClicked");
-
-            String result = "{deviceSerial:" + deviceSerial + ","
-                    + "deviceName:" + deviceName + ","
-                    + "cameraName:" + cameraName + ","
-                    + "picUrl:" + picUrl + ","
-                    + "cameraNo:" + cameraNo + ","
-                    + "status:" + status + ","
-                    + "isShared:" + isShared + ","
-                    + "isEncrypt:" + isEncrypt + ","
-                    + "defence:" + defence + ","
-                    + "videoLevel:" + videoLevel + "}";
-            Bundle b = new Bundle();
-            b.putString( "data", result );
-            intent.putExtras(b);
-
-            LocalBroadcastManager.getInstance(this).sendBroadcastSync(intent);
-
-        }catch (BaseException e) {
-            e.printStackTrace();
-
-            ErrorInfo errorInfo = (ErrorInfo) e.getObject();
-            LogUtil.debugLog(TAG, errorInfo.toString());
-        }
 //        // 云存储开关,设备不在线或是不是最新的设备或是用户没有开启云存储服务是看不到这个控件的
 //        if (llyCloundService.getVisibility() == View.VISIBLE && ckbCloundService.isChecked()) {
 //            enableCloudStoryed();
 //        } else {
 //            closeActivity();
 //        }
+    }
+
+    private class getDeviceInfo extends AsyncTask<Void, Void, EZDeviceInfo> {
+        private Context context;
+        getDeviceInfo(Context context) {
+            this.context = context;
+        }
+
+        @Override
+        protected EZDeviceInfo doInBackground(Void... params) {
+            try {
+                EZDeviceInfo deviceInfo = getOpenSDK().getDeviceInfo(serialNo);
+                EZCameraInfo cameraInfo = EZUtils.getCameraInfoFromDevice(deviceInfo, 0);
+
+                int videoLevel = cameraInfo.getVideoLevel().getVideoLevel();
+                int defence = deviceInfo.getDefence();
+                int isEncrypt = deviceInfo.getIsEncrypt();
+                int isShared = cameraInfo.getIsShared();
+                int status = deviceInfo.getStatus();
+                int cameraNo = cameraInfo.getCameraNo();
+                String picUrl = cameraInfo.getCameraCover();
+                String cameraName = cameraInfo.getCameraName();
+                String deviceName = deviceInfo.getDeviceName();
+                String deviceSerial = deviceInfo.getDeviceSerial();
+
+                final Intent intent2 = new Intent("completionButtonClicked");
+
+                String result = "{deviceSerial:" + deviceSerial + ","
+                        + "deviceName:" + deviceName + ","
+                        + "cameraName:" + cameraName + ","
+                        + "picUrl:" + picUrl + ","
+                        + "cameraNo:" + cameraNo + ","
+                        + "status:" + status + ","
+                        + "isShared:" + isShared + ","
+                        + "isEncrypt:" + isEncrypt + ","
+                        + "defence:" + defence + ","
+                        + "videoLevel:" + videoLevel + "}";
+                Bundle b = new Bundle();
+                b.putString("data", result);
+                intent2.putExtras(b);
+
+                LocalBroadcastManager.getInstance(context).sendBroadcastSync(intent2);
+                return null;
+            } catch (BaseException e) {
+                e.printStackTrace();
+
+                ErrorInfo errorInfo = (ErrorInfo) e.getObject();
+                LogUtil.debugLog(TAG, errorInfo.toString());
+
+                return null;
+            }
+        }
     }
 
     /**

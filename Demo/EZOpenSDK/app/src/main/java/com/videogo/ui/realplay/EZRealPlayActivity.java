@@ -202,6 +202,10 @@ public class EZRealPlayActivity extends Activity implements OnClickListener, Sur
     private TextView mRealPlayFlowTv = null;
     private int mControlDisplaySec = 0;
 
+    private String dispCaption ;
+    private String lightCaption ;
+    private String eventName;
+
     // 播放比例
     private float mPlayScale = 1;
 
@@ -457,7 +461,9 @@ public class EZRealPlayActivity extends Activity implements OnClickListener, Sur
 
         if (mEZPlayer != null) {
             mEZPlayer.release();
-
+        }
+        if(!eventName.equals("")){
+            this.SendEvent("close","");
         }
 
         mHandler.removeMessages(MSG_AUTO_START_PLAY);
@@ -475,23 +481,23 @@ public class EZRealPlayActivity extends Activity implements OnClickListener, Sur
         mScreenOrientationHelper = null;
     }
 
-    private void  exit(){
-        closePtzPopupWindow();
-        closeTalkPopupWindow(true, false);
-        if (mStatus != RealPlayStatus.STATUS_STOP) {
-            stopRealPlay();
-            setRealPlayStopUI();
-        }
-        mHandler.removeMessages(MSG_AUTO_START_PLAY);
-        mHandler.removeMessages(MSG_HIDE_PTZ_DIRECTION);
-        mHandler.removeMessages(MSG_CLOSE_PTZ_PROMPT);
-        mHandler.removeMessages(MSG_HIDE_PAGE_ANIM);
-        if (mBroadcastReceiver != null) {
-            // 取消锁屏广播的注册
-            unregisterReceiver(mBroadcastReceiver);
-            mBroadcastReceiver = null;
-        }
-        finish();
+   private void  exit(){
+       closePtzPopupWindow();
+       closeTalkPopupWindow(true, false);
+       if (mStatus != RealPlayStatus.STATUS_STOP) {
+           stopRealPlay();
+           setRealPlayStopUI();
+       }
+       mHandler.removeMessages(MSG_AUTO_START_PLAY);
+       mHandler.removeMessages(MSG_HIDE_PTZ_DIRECTION);
+       mHandler.removeMessages(MSG_CLOSE_PTZ_PROMPT);
+       mHandler.removeMessages(MSG_HIDE_PAGE_ANIM);
+       if (mBroadcastReceiver != null) {
+           // 取消锁屏广播的注册
+           unregisterReceiver(mBroadcastReceiver);
+           mBroadcastReceiver = null;
+       }
+       finish();
     }
 
     @Override
@@ -540,73 +546,33 @@ public class EZRealPlayActivity extends Activity implements OnClickListener, Sur
         mRealPlaySquareInfo = new RealPlaySquareInfo();
         Intent intent = getIntent();
         if (intent != null) {
-            mCameraInfo = intent.getParcelableExtra(IntentConsts.EXTRA_CAMERA_INFO);
-            mDeviceInfo = intent.getParcelableExtra(IntentConsts.EXTRA_DEVICE_INFO);
+            Bundle myBundle = this.getIntent().getExtras();
+            mCameraInfo = (EZCameraInfo)myBundle.getParcelable(IntentConsts.EXTRA_CAMERA_INFO);
+            mDeviceInfo = (EZDeviceInfo)myBundle.getParcelable(IntentConsts.EXTRA_DEVICE_INFO);
             mRtspUrl = intent.getStringExtra(IntentConsts.EXTRA_RTSP_URL);
             if (mCameraInfo != null) {
                 mCurrentQulityMode = (mCameraInfo.getVideoLevel());
             }
             LogUtil.debugLog(TAG, "rtspUrl:" + mRtspUrl);
 
+            dispCaption = myBundle.getString("com.laitron.ezviz.action_on_preview");
+            if(dispCaption == null){
+                dispCaption = "";
+            }
+            lightCaption = myBundle.getString("com.laitron.ezviz.light_on_preview");
+            if(lightCaption == null){
+                lightCaption = "";
+            }
+
+            eventName =  myBundle.getString("com.laitron.ezviz.evt_on_preview");
+            if(eventName == null){
+                eventName = "";
+            }
+
             getRealPlaySquareInfo();
         }
         if (mDeviceInfo != null && mDeviceInfo.getIsEncrypt() == 1) {
             mVerifyCode = DataManager.getInstance().getDeviceSerialVerifyCode(mCameraInfo.getDeviceSerial());
-        }
-
-
-        new getDeviceInfo(this).execute();
-    }
-
-    private class getDeviceInfo extends AsyncTask<Void, Void, EZDeviceInfo> {
-        private Context context;
-        getDeviceInfo(Context context) {
-            this.context = context;
-        }
-
-        @Override
-        protected EZDeviceInfo doInBackground(Void... params) {
-            try {
-                EZDeviceInfo deviceInfo = getOpenSDK().getDeviceInfo(mDeviceInfo.getDeviceSerial());
-                EZCameraInfo cameraInfo = EZUtils.getCameraInfoFromDevice(deviceInfo, 0);
-
-                int videoLevel = cameraInfo.getVideoLevel().getVideoLevel();
-                int defence = deviceInfo.getDefence();
-                int isEncrypt = deviceInfo.getIsEncrypt();
-                int isShared = cameraInfo.getIsShared();
-                int status = deviceInfo.getStatus();
-                int cameraNo = cameraInfo.getCameraNo();
-                String picUrl = cameraInfo.getCameraCover();
-                String cameraName = cameraInfo.getCameraName();
-                String deviceName = deviceInfo.getDeviceName();
-                String deviceSerial = deviceInfo.getDeviceSerial();
-
-                final Intent intent2 = new Intent("completionButtonClicked");
-
-                String result = "{deviceSerial:" + deviceSerial + ","
-                        + "deviceName:" + deviceName + ","
-                        + "cameraName:" + cameraName + ","
-                        + "picUrl:" + picUrl + ","
-                        + "cameraNo:" + cameraNo + ","
-                        + "status:" + status + ","
-                        + "isShared:" + isShared + ","
-                        + "isEncrypt:" + isEncrypt + ","
-                        + "defence:" + defence + ","
-                        + "videoLevel:" + videoLevel + "}";
-                Bundle b = new Bundle();
-                b.putString("data", result);
-                intent2.putExtras(b);
-
-                LocalBroadcastManager.getInstance(context).sendBroadcastSync(intent2);
-                return null;
-            } catch (BaseException e) {
-                e.printStackTrace();
-
-                ErrorInfo errorInfo = (ErrorInfo) e.getObject();
-                LogUtil.debugLog(TAG, errorInfo.toString());
-
-                return null;
-            }
         }
     }
 
@@ -1099,8 +1065,42 @@ public class EZRealPlayActivity extends Activity implements OnClickListener, Sur
             mRealPlayRecordStartBtn = (ImageButton) findViewById(R.id.realplay_video_start_btn);
             mRealPlayPtzBtn = (ImageButton) findViewById(R.id.realplay_ptz_btn);
         }
+
+        TextView lblTitle=(TextView)findViewById(R.id.realplay_spec_btn_txt);
+        lblTitle.setText(dispCaption);
+        LinearLayout layout = (LinearLayout)findViewById(R.id.realplay_spec_btn_ly);
+        LogUtil.debugLog(TAG,"setCaption:" + dispCaption);
+        LogUtil.debugLog(TAG,"eventName:" + eventName);
+        if(dispCaption.equals( "")){
+
+            layout.setVisibility(View.GONE);
+        }else{
+            layout.setVisibility(View.VISIBLE);
+
+
+        }
+        LinearLayout light_layout = (LinearLayout)findViewById(R.id.realplay_video_container_light_ly);
+        if(lightCaption.equals( "")){
+
+            light_layout.setVisibility(View.GONE);
+        }else{
+            light_layout.setVisibility(View.VISIBLE);
+
+        }
+        if(!eventName.equals("")){
+            LogUtil.debugLog(TAG, "setEvent"+eventName);
+        }
         mRealPlayTalkBtn.setEnabled(false);
         mRealPlayOperateBar.setVisibility(View.VISIBLE);
+    }
+
+    private void SendEvent(String evtData,String source){
+        LogUtil.debugLog(TAG, "event Name:" + eventName + " :"+evtData+" ."+ source);
+        final Intent intent = new Intent(eventName);
+        Bundle b = new Bundle();
+        b.putString( "userdata", "{ \"data\": \""+evtData+"\",\"source\":\""+source+"\"}" );
+        intent.putExtras( b);
+        LocalBroadcastManager.getInstance(this).sendBroadcastSync(intent);
     }
 
     private void setBigScreenOperateBtnLayout() {
@@ -1414,6 +1414,12 @@ public class EZRealPlayActivity extends Activity implements OnClickListener, Sur
                 break;
             case R.id.realplay_full_talk_anim_btn:
                 closeTalkPopupWindow(true, true);
+                break;
+            case R.id.realplay_spec_btn:
+                this.SendEvent("click","0");
+                break;
+            case R.id.realplay_light_btn:
+                this.SendEvent("click","1");
                 break;
             default:
                 break;
@@ -2692,7 +2698,7 @@ public class EZRealPlayActivity extends Activity implements OnClickListener, Sur
         setRealPlayTalkUI();
 
         setVideoLevel();
-        
+
 /*
         if (mRealPlayMgr != null && mRealPlayMgr.getSupportPtzPrivacy() == 1) {
             mRealPlayPrivacyBtnLy.setVisibility(View.VISIBLE);
@@ -3041,7 +3047,7 @@ public class EZRealPlayActivity extends Activity implements OnClickListener, Sur
         setRealPlaySound();
 
         // temp solution for OPENSDK-92
-        // Android 预览3Q10的时候切到流畅之后 视频播放窗口变大了 
+        // Android 预览3Q10的时候切到流畅之后 视频播放窗口变大了
         //        if (msg.arg1 != 0) {
         //            mRealRatio = (float) msg.arg2 / msg.arg1;
         //        } else {
