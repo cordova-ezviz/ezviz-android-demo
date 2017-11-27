@@ -10,7 +10,7 @@
     <com.videogo.widget.TitleBar
         android:id="@+id/title_bar_portrait"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"/>
 
     <RelativeLayout
         android:id="@+id/realplay_play_rl"

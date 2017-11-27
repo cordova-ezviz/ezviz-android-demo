@@ -14,6 +14,7 @@ import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -639,7 +640,7 @@ public class EZRealPlayActivity extends Activity implements OnClickListener, Sur
                 finish();
             }
         });
-        mPortraitTitleBar.addRightButton(R.drawable.open_cameralist_setup_selector, new OnClickListener() {
+        mPortraitTitleBar.addRightButton(R.drawable.common_title_setup_selector, new OnClickListener() {
 
             @Override
             public void onClick(View v) {
