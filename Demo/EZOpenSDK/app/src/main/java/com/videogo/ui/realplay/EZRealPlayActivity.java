@@ -73,6 +73,7 @@ import com.videogo.openapi.EzvizAPI;
 import com.videogo.openapi.bean.EZCameraInfo;
 import com.videogo.openapi.bean.EZDeviceInfo;
 import com.videogo.realplay.RealPlayStatus;
+import com.videogo.devicemgt.EZDeviceSettingActivity;
 import com.videogo.ui.cameralist.EZCameraListActivity;
 import com.videogo.ui.common.ScreenOrientationHelper;
 import com.videogo.ui.realplay.RealPlaySquareInfo;
@@ -638,6 +639,19 @@ public class EZRealPlayActivity extends Activity implements OnClickListener, Sur
                 finish();
             }
         });
+        mPortraitTitleBar.addRightButton(R.drawable.open_cameralist_setup_selector, new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(EZRealPlayActivity.this, EZDeviceSettingActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putParcelable(IntentConsts.EXTRA_DEVICE_INFO,mDeviceInfo);
+                bundle.putParcelable(IntentConsts.EXTRA_CAMERA_INFO,mCameraInfo);
+                intent.putExtra("Bundle",bundle);
+                startActivity(intent);
+            }
+        });
+
         if (mRtspUrl == null) {
         } else {
             //mPortraitTitleBar.setBackgroundColor(getResources().getColor(R.color.black_bg));
@@ -1655,18 +1669,6 @@ public class EZRealPlayActivity extends Activity implements OnClickListener, Sur
             public void run() {
                 boolean ptz_result = false;
                 try {
-//                    //参数
-//                    Map<String,String> params = new HashMap<String,String>();
-//                    params.put("accessToken", EzvizAPI.getInstance().getAccessToken());
-//                    params.put("deviceSerial", mCameraInfo.getDeviceSerial());
-//                    params.put("channelNo", String.valueOf(mCameraInfo.getCameraNo()));
-//                    params.put("direction", "1");
-//                    params.put("speed", "2");
-//
-//                    //服务器请求路径
-//                    String strUrlPath = "https://open.ys7.com/api/lapp/device/ptz/start";
-//                    String strResult=HttpUtils.submitPostData(strUrlPath,params, "utf-8");
-
                     ptz_result = EzvizApplication.getOpenSDK().controlPTZ(mCameraInfo.getDeviceSerial(), mCameraInfo.getCameraNo(), command,
                             action, EZConstants.PTZ_SPEED_DEFAULT);
                 } catch (BaseException e) {

@@ -428,6 +428,7 @@ public class AutoWifiConnectingActivity extends RootActivity implements OnClickL
      */
     private void findViews() {
         btnBack = findViewById(R.id.btnBack);
+        btnBack = findViewById(R.id.btnBack);
         btnCancel = findViewById(R.id.cancel_btn);
         tvTitle = (TextView) findViewById(R.id.tvTitle);
 

@@ -24,6 +24,7 @@ import com.videogo.exception.BaseException;
 import com.videogo.exception.ErrorCode;
 import com.videogo.openapi.EZConstants;
 import com.videogo.openapi.EZOpenSDK;
+import com.videogo.openapi.bean.EZCameraInfo;
 import com.videogo.openapi.bean.EZDeviceInfo;
 import com.videogo.openapi.bean.EZDeviceVersion;
 import com.videogo.ui.cameralist.EZCameraListActivity;
@@ -144,9 +145,13 @@ public class EZDeviceSettingActivity extends RootActivity {
      * 修改密码
      */
     private ViewGroup mModifyPasswordLayout;
+    /**
+     * 画面翻转信息
+     */
+    private ViewGroup mMirrorLayout;
 
     /* 设备删除 */
-    private View mDeviceDeleteView;
+//    private View mDeviceDeleteView;
     /**
      * 全局按钮监听
      */
@@ -158,6 +163,7 @@ public class EZDeviceSettingActivity extends RootActivity {
     private String mValidateCode;
     private EZDeviceVersion mDeviceVersion = null;
     private EZDeviceInfo mEZDeviceInfo = null;
+    private EZCameraInfo mEZCameraInfo = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -205,7 +211,9 @@ public class EZDeviceSettingActivity extends RootActivity {
         mEncryptButton = (Button) findViewById(R.id.encrypt_button);
         mModifyPasswordLayout = (ViewGroup) findViewById(R.id.modify_password_layout);
 
-        mDeviceDeleteView = findViewById(R.id.device_delete);
+        mMirrorLayout = (ViewGroup) findViewById(R.id.mirror_layout);
+
+//        mDeviceDeleteView = findViewById(R.id.device_delete);
         mDeviceSerialTextView = (TextView) findViewById(R.id.ez_device_serial);
     }
 
@@ -216,6 +224,7 @@ public class EZDeviceSettingActivity extends RootActivity {
         Intent intent = getIntent();
         Bundle bundle = intent.getBundleExtra("Bundle");
         mEZDeviceInfo = bundle.getParcelable(IntentConsts.EXTRA_DEVICE_INFO);
+        mEZCameraInfo = bundle.getParcelable(IntentConsts.EXTRA_CAMERA_INFO);
         if (mEZDeviceInfo == null){
             showToast(R.string.device_have_not_added);
             finish();
@@ -307,10 +316,15 @@ public class EZDeviceSettingActivity extends RootActivity {
                         case R.id.modify_password_layout:
                             gotoModifyPassword();
                             break;
-                            
-                        case R.id.device_delete:
-                            showDialog(SHOW_DIALOG_DEL_DEVICE);
+
+                        case R.id.mirror_layout:
+                            LogUtil.debugLog(TAG, "画面翻转");
+                            new SetMirrorTask().execute(true);
                             break;
+
+//                        case R.id.device_delete:
+//                            showDialog(SHOW_DIALOG_DEL_DEVICE);
+//                            break;
 
                         default:
                             break;
@@ -323,7 +337,7 @@ public class EZDeviceSettingActivity extends RootActivity {
             // 防护计划设置
             setupSafeModePlan(true);
 
-            mDeviceDeleteView.setOnClickListener(mOnClickListener);
+//            mDeviceDeleteView.setOnClickListener(mOnClickListener);
         }
     }
 
@@ -375,6 +389,8 @@ public class EZDeviceSettingActivity extends RootActivity {
 
             mDeviceInfoLayout.setOnClickListener(mOnClickListener);
             mDeviceSNLayout.setOnClickListener(mOnClickListener);
+
+            mMirrorLayout.setOnClickListener(mOnClickListener);
 
             mDefencePlanParentLayout.setVisibility(View.GONE);
 
@@ -853,6 +869,59 @@ public class EZDeviceSettingActivity extends RootActivity {
         }
     }
 
+    /**
+     * 画面翻转任务
+     */
+    private class SetMirrorTask extends AsyncTask<Boolean, Void, Boolean> {
+        private WaitDialog mWaitDialog;
+        private int mErrorCode = 0;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            mWaitDialog = new WaitDialog(EZDeviceSettingActivity.this, android.R.style.Theme_Translucent_NoTitleBar);
+            mWaitDialog.setCancelable(false);
+            mWaitDialog.setWaitText("正在设置，请稍候...");
+            mWaitDialog.show();
+        }
+
+        @Override
+        protected Boolean doInBackground(Boolean... params) {
+            try {
+                EzvizApplication.getOpenSDK().controlVideoFlip(mEZDeviceInfo.getDeviceSerial(),mEZCameraInfo.getCameraNo(), EZConstants.EZPTZDisplayCommand.EZPTZDisplayCommandFlip);
+            } catch (BaseException e) {
+                mErrorCode = e.getObject().hashCode();
+
+                e.printStackTrace();
+            }
+            return true;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean result) {
+            super.onPostExecute(result);
+            mWaitDialog.dismiss();
+            if(mErrorCode == 0) {
+                showToast("操作成功");
+            } else {
+                switch (mErrorCode) {
+                    case ErrorCode.ERROR_WEB_NET_EXCEPTION:
+                        showToast(R.string.encrypt_password_open_fail_networkexception);
+                        break;
+                    case ErrorCode.ERROR_WEB_SESSION_ERROR:
+                        ActivityUtils.handleSessionException(EZDeviceSettingActivity.this);
+                        break;
+                    case ErrorCode.ERROR_WEB_HARDWARE_SIGNATURE_ERROR:
+                        ActivityUtils.handleSessionException(EZDeviceSettingActivity.this);
+                        break;
+                    default:
+                        showToast(R.string.encrypt_password_open_fail, mErrorCode);
+                        break;
+                }
+            }
+        }
+
+    }
     /**
      * 删除设备任务
      */

@@ -257,6 +257,9 @@ public class EZCameraListActivity extends Activity implements OnClickListener, S
                     Intent intent = new Intent(EZCameraListActivity.this, EZRealPlayActivity.class);
                     intent.putExtra(IntentConsts.EXTRA_CAMERA_INFO, cameraInfo);
                     intent.putExtra(IntentConsts.EXTRA_DEVICE_INFO, deviceInfo);
+//                    intent.putExtra("com.laitron.ezviz.evt_on_preview", "eventName");
+//                    intent.putExtra("com.laitron.ezviz.light_on_preview", "开灯");
+//                    intent.putExtra("com.laitron.ezviz.action_on_preview", "开门");
                     startActivityForResult(intent, REQUEST_CODE);
                     return;
                 }

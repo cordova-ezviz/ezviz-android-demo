@@ -491,21 +491,47 @@
                         android:src="@drawable/arrow_next" />
                 </LinearLayout>
             </com.videogo.widget.GroupLayout>
+
             <com.videogo.widget.GroupLayout
                 style="@style/CommonGroupLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/device_set_layout_padding" >
 
-                <TextView
-                    android:id="@+id/device_delete"
+                <LinearLayout
+                    android:id="@+id/mirror_layout"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/device_set_layout_height"
-                    android:gravity="center"
-                    android:text="@string/delete"
-                    android:textColor="#ff0000"
-                    android:textSize="@dimen/device_set_text_size" />
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingLeft="@dimen/device_set_padding"
+                    android:paddingRight="@dimen/device_set_padding" >
+
+                    <TextView
+                        android:id="@+id/mirror_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="画面翻转"
+                        android:textColor="@color/common_text"
+                        android:textSize="@dimen/device_set_text_size" />
+                </LinearLayout>
             </com.videogo.widget.GroupLayout>
+
+            <!--<com.videogo.widget.GroupLayout-->
+                <!--style="@style/CommonGroupLayout"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginTop="@dimen/device_set_layout_padding" >-->
+
+                <!--<TextView-->
+                    <!--android:id="@+id/device_delete"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="@dimen/device_set_layout_height"-->
+                    <!--android:gravity="center"-->
+                    <!--android:text="@string/delete"-->
+                    <!--android:textColor="#ff0000"-->
+                    <!--android:textSize="@dimen/device_set_text_size" />-->
+            <!--</com.videogo.widget.GroupLayout>-->
         </LinearLayout>
     </ScrollView>
 
