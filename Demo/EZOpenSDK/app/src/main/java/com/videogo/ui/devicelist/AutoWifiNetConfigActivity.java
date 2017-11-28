@@ -188,8 +188,7 @@ public class AutoWifiNetConfigActivity extends RootActivity implements OnClickLi
     @Override
     public void onClick(View v) {
         Intent intent = null;
-        switch (v.getId()) {
-            case R.id.btnNext:
+        if (v.getId()==  R.id.btnNext){
                 if (isFromDeviceSetting) {
                     //intent = new Intent(this, AutoWifiOfflineDeviceActivity.class);
                 } else {
@@ -205,9 +204,6 @@ public class AutoWifiNetConfigActivity extends RootActivity implements OnClickLi
                 intent.putExtra(ResetIntroduceActivity.IS_FROM_DEVICE_SETTING, isFromDeviceSetting);
                 intent.putExtra(DEVICE_TYPE, deviceType);
                 startActivity(intent);
-                break;
-            default:
-                break;
         }
     }
 }

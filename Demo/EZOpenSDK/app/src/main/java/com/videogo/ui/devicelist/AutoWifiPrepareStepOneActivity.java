@@ -107,19 +107,16 @@ public class AutoWifiPrepareStepOneActivity extends RootActivity implements OnCl
     @Override
     public void onClick(View v) {
         Intent intent = null;
-        switch (v.getId()) {
-            case R.id.btnNext:
+        int viewId = v.getId();
+        if(viewId == R.id.btnNext){
                 intent = new Intent(this, AutoWifiNetConfigActivity.class);
                 intent.putExtras(getIntent());
                 startActivity(intent);
-                break;
-            case R.id.btnIntroduce:
+        }else if(viewId == R.id.btnIntroduce){
                 intent = new Intent(this, AutoWifiResetActivity.class);
                 intent.putExtras(getIntent());
                 startActivity(intent);
-                break;
-            default:
-                break;
+
         }
     }
 
