@@ -1,1 +1,1 @@
-include ':app', ':ezviz', ':ezvizsdk'
+include ':app'

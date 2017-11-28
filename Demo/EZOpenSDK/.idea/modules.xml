@@ -4,8 +4,6 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/EZOpenSDK.iml" filepath="$PROJECT_DIR$/EZOpenSDK.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/ezviz/ezviz.iml" filepath="$PROJECT_DIR$/ezviz/ezviz.iml" />
-      <module fileurl="file://$PROJECT_DIR$/ezvizsdk/ezvizsdk.iml" filepath="$PROJECT_DIR$/ezvizsdk/ezvizsdk.iml" />
     </modules>
   </component>
 </project>
