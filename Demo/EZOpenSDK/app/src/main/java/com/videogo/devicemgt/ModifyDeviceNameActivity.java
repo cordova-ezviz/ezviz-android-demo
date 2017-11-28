@@ -198,11 +198,11 @@ public class ModifyDeviceNameActivity extends RootActivity implements View.OnCli
 
 	@Override
 	public void onClick(View view) {
-		switch(view.getId()) {
-			case R.id.btn_id_save_name:
-				modifyDeviceName();
-				break;
-		}
+        if(view.getId() ==R.id.btn_id_save_name ) {
+
+                modifyDeviceName();
+
+        }
 	}
 
     private void setSelectLabel(String input) {}

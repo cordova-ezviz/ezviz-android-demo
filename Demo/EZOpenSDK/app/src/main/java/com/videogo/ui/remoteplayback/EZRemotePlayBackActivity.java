@@ -1272,12 +1272,11 @@ public class EZRemotePlayBackActivity extends Activity implements OnClickListene
      */
     @Override
     public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.remoteplayback_loading_play_btn:
+        int viewId = view.getId();
+            if( R.id.remoteplayback_loading_play_btn == viewId) {
                 startRemotePlayBack(getTimeBarSeekTime());
-                break;
-            case R.id.remoteplayback_play_btn:
-            case R.id.remoteplayback_full_play_btn:
+            }else if( R.id.remoteplayback_play_btn == viewId ||
+             R.id.remoteplayback_full_play_btn== viewId){
                 if (mStatus == STATUS_START || mStatus == STATUS_PLAY) {
                     if (mStatus == STATUS_PLAY) {
                         pauseRemotePlayBack();
@@ -1288,38 +1287,23 @@ public class EZRemotePlayBackActivity extends Activity implements OnClickListene
                 } else {
                     startRemotePlayBack(getTimeBarSeekTime());
                 }
-                break;
-            case R.id.remoteplayback_replay_btn:
+        }else if( R.id.remoteplayback_replay_btn== viewId){
                 if (mStatus != STATUS_STOP) {
                     stopRemotePlayBack();
                 }
                 startRemotePlayBack(null);
-                break;
-            case R.id.remoteplayback_sound_btn:
-            case R.id.remoteplayback_full_sound_btn:
+        }else if( R.id.remoteplayback_sound_btn== viewId || R.id.remoteplayback_full_sound_btn== viewId){
                 onSoundBtnClick();
-                break;
-            case R.id.remoteplayback_previously_btn:
-            case R.id.remoteplayback_full_previously_btn:
-            case R.id.remoteplayback_small_previously_btn:
+        }else if( R.id.remoteplayback_previously_btn== viewId || R.id.remoteplayback_full_previously_btn== viewId || R.id.remoteplayback_small_previously_btn== viewId){
                 onCapturePicBtnClick();
-                break;
-            case R.id.remoteplayback_capture_rl:
+        }else if( R.id.remoteplayback_capture_rl== viewId){
                 onCaptureRlClick();
-                break;
-            case R.id.remoteplayback_video_btn:
-            case R.id.remoteplayback_full_video_btn:
-            case R.id.remoteplayback_small_video_btn:
-            case R.id.remoteplayback_video_start_btn:
-            case R.id.remoteplayback_full_video_start_btn:
-            case R.id.remoteplayback_small_video_start_btn:
+        }else if( R.id.remoteplayback_video_btn== viewId || R.id.remoteplayback_full_video_btn == viewId || R.id.remoteplayback_small_video_btn== viewId
+                    || R.id.remoteplayback_video_start_btn == viewId || R.id.remoteplayback_full_video_start_btn == viewId || R.id.remoteplayback_small_video_start_btn== viewId){
                 onRecordBtnClick();
-                break;
-            case R.id.remoteplayback_full_down_btn:
+        }else if( R.id.remoteplayback_full_down_btn== viewId){
                 onTimeBarDownBtnClick();
-                break;
-            default:
-                break;
+
         }
     }
 

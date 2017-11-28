@@ -8,12 +8,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.videogo.EzvizApplication;
+import com.videogo.RootActivity;
 import com.videogo.exception.BaseException;
 import com.videogo.openapi.EZConstants;
 import com.videogo.openapi.EZConstants.EZAlarmStatus;
 import com.videogo.openapi.EZConstants.EZMessageStatus;
-import com.videogo.openapi.EZOpenSDK;
 import com.videogo.openapi.bean.EZAlarmInfo;
 import com.videogo.openapi.bean.EZDeviceInfo;
 import com.videogo.openapi.bean.EZDeviceUpgradeStatus;
@@ -92,14 +91,14 @@ public class InterfaceTestActivity extends Activity implements View.OnClickListe
 
     @Override
     public void onClick(View view) {
-        switch(view.getId()) {
+       /* switch(view.getId()) {
             case R.id.interface_test_button:
                 testV32Interface();
                 break;
             case R.id.id_interface_test_openCloudPage:
-//                final String DeviceSerial = mSerialEdit.getEditableText().toString();
+                final String DeviceSerial = mSerialEdit.getEditableText().toString();
                 try {
-                    if (EZOpenSDK.class.isInstance(EzvizApplication.getOpenSDK())) {
+                    if (EZOpenSDK.class.isInstance(RootActivity.getOpenSDK())) {
                         EZOpenSDK.getInstance().openCloudPage(DeviceSerial);
                     }
                 } catch (BaseException e) {
@@ -112,7 +111,7 @@ public class InterfaceTestActivity extends Activity implements View.OnClickListe
                 break;
             default:
                 break;
-        }
+        }*/
     }
 
     private void findViews() {
@@ -147,7 +146,7 @@ public class InterfaceTestActivity extends Activity implements View.OnClickListe
                 // test interface getUserInfo
                 LogUtil.i(TAG, "==========================getUserInfo Started==========================");
                 try {
-                    EZUserInfo userInfo = EzvizApplication.getOpenSDK().getUserInfo();
+                    EZUserInfo userInfo = RootActivity.getOpenSDK().getUserInfo();
                     LogUtil.i(TAG, "EZUserInfo:" + userInfo);
                 } catch (BaseException e) {
                     e.printStackTrace();
@@ -165,7 +164,7 @@ public class InterfaceTestActivity extends Activity implements View.OnClickListe
                 // test interface getLeaveMessageList
                 LogUtil.i(TAG, "==========================getLeaveMessageList Started==========================");
                 try {
-                    LeaveMessageList =EzvizApplication.getOpenSDK().getInstance().getLeaveMessageList(F1DeviceSerial, 0, 20, begin, end);
+                    LeaveMessageList =RootActivity.getOpenSDK().getInstance().getLeaveMessageList(F1DeviceSerial, 0, 20, begin, end);
                     LogUtil.i("ResponseData", "getLeaveMessageList:" + LeaveMessageList);
                 } catch (BaseException e) {
                     e.printStackTrace();
@@ -182,25 +181,25 @@ public class InterfaceTestActivity extends Activity implements View.OnClickListe
                 // test interface setLeaveMsgStatus
                 LogUtil.i(TAG, "==========================setLeaveMessageStatus Started==========================");
 //                try {
-//                	List<String> leaveIds = new ArrayList<String>();
-//                	leaveIds.add(LeaveMessageList.get(0).getMsgId());
-//                	EzvizApplication.getOpenSDK().setLeaveMessageStatus(leaveIds, EZMessageStatus.EZMessageStatusRead);
-//                	//verify
+//                  List<String> leaveIds = new ArrayList<String>();
+//                  leaveIds.add(LeaveMessageList.get(0).getMsgId());
+//                  RootActivity.getOpenSDK().setLeaveMessageStatus(leaveIds, EZMessageStatus.EZMessageStatusRead);
+//                  //verify
 //                    try {
-//                        List<EZLeaveMessage> verifyLeaveMessageList = EzvizApplication.getOpenSDK().getLeaveMessageList(F1DeviceSerial, 0, 5, begin, end);
+//                        List<EZLeaveMessage> verifyLeaveMessageList = RootActivity.getOpenSDK().getLeaveMessageList(F1DeviceSerial, 0, 5, begin, end);
 //                        for(EZLeaveMessage temp : verifyLeaveMessageList){
-//                        	if (temp.getMsgId().equals(leaveIds.get(0))){
-//                        		if (temp.getMsgStatus() != EZMessageStatus.EZMessageStatusRead.getStatus()){
-//                        			throw new BaseException("this leaveID's status " + temp.getMsgStatus() + " != " + EZMessageStatus.EZMessageStatusRead + " ,message id : " + temp.getMsgId(),0);
-//                        		};
-//                        	}
+//                          if (temp.getMsgId().equals(leaveIds.get(0))){
+//                              if (temp.getMsgStatus() != EZMessageStatus.EZMessageStatusRead.getStatus()){
+//                                  throw new BaseException("this leaveID's status " + temp.getMsgStatus() + " != " + EZMessageStatus.EZMessageStatusRead + " ,message id : " + temp.getMsgId(),0);
+//                              };
+//                          }
 //                        }
 //                    } catch (BaseException e) {
 //                        e.printStackTrace();
 //                    }
 //
 //                }catch (BaseException e) {
-//                	e.printStackTrace();
+//                  e.printStackTrace();
 //                }
 
                 //correct data
@@ -313,14 +312,14 @@ public class InterfaceTestActivity extends Activity implements View.OnClickListe
                 // 海外版不需要测试这个 add by yudan @ 07-21
 //                try {
 //                    LogUtil.i(TAG, "==========================getPushNoticeMessage Started==========================");
-//                    EzvizApplication.getOpenSDK().getPushNoticeMessage("af");
+//                    RootActivity.getOpenSDK().getPushNoticeMessage("af");
 //                } catch (BaseException e) {
 //                    e.printStackTrace();
 //                }
 
                 try {
                     LogUtil.i(TAG, "==========================getPrivateMethodInvoke Started==========================");
-                    Object result = EZUtils.getPrivateMethodInvoke(EzvizApplication.getOpenSDK(), "getHTTPPublicParam", new Class<?>[]{String.class}, "clientType");
+                    Object result = EZUtils.getPrivateMethodInvoke(RootActivity.getOpenSDK(), "getHTTPPublicParam", new Class<?>[]{String.class}, "clientType");
                     Log.i(TAG, "run: getHTTPPublicParam(clientType)" + (String) result);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -362,7 +361,7 @@ public class InterfaceTestActivity extends Activity implements View.OnClickListe
                 LogUtil.i(TAG, "==========================getAlarmListBySerial Started==========================");
                 //if deviceSerial == null, it will return alarms for all devices belong to the account
                 try {
-                    alarmList = EzvizApplication.getOpenSDK().getAlarmList(A1DeviceSerial, 0, 20, begin, end);
+                    alarmList = RootActivity.getOpenSDK().getAlarmList(A1DeviceSerial, 0, 20, begin, end);
                     Log.i("ReturnData", "run: Alarm info:" + alarmList);
                 } catch (BaseException e) {
                     e.printStackTrace();
@@ -421,7 +420,7 @@ public class InterfaceTestActivity extends Activity implements View.OnClickListe
                 alarmIdList = new ArrayList();
                 alarmIdList.add(alarmList.get(1).getAlarmId());
                 try {
-                    EzvizApplication.getOpenSDK().getAlarmList(A1DeviceSerial, 0, 5, begin, end);
+                    RootActivity.getOpenSDK().getAlarmList(A1DeviceSerial, 0, 5, begin, end);
                 } catch (BaseException e) {
                     e.printStackTrace();
                 }
@@ -474,7 +473,7 @@ public class InterfaceTestActivity extends Activity implements View.OnClickListe
     private void capturePictureTemplate(String deviceSerial, int channelNo, int expectedCode){
         LogUtil.i(TAG, "capturePicture params, " + "deviceSerial:"+deviceSerial + " channelNo:"+channelNo + " expectedCode:"+expectedCode );
         try {
-            String picUrl = EzvizApplication.getOpenSDK().captureCamera(deviceSerial, channelNo);
+            String picUrl = RootActivity.getOpenSDK().captureCamera(deviceSerial, channelNo);
             LogUtil.i("ReturnData", "capturePicture: " + picUrl);
         } catch (BaseException e) {
             e.printStackTrace();
@@ -485,7 +484,7 @@ public class InterfaceTestActivity extends Activity implements View.OnClickListe
     private void getUnreadMessageCountTemplate(String deviceSerial, EZConstants.EZMessageType messageType, int expectedCode){
         LogUtil.i(TAG, "unReadMessageCount params, " + "deviceSerial:"+deviceSerial + " messageType:"+messageType + " expectedCode:"+expectedCode );
         try {
-            int msgCount = EzvizApplication.getOpenSDK().getUnreadMessageCount(deviceSerial, messageType);
+            int msgCount = RootActivity.getOpenSDK().getUnreadMessageCount(deviceSerial, messageType);
             LogUtil.i("ReturnData", "unReadMessageCount:" + msgCount);
         } catch (BaseException e) {
             e.printStackTrace();
@@ -496,7 +495,7 @@ public class InterfaceTestActivity extends Activity implements View.OnClickListe
     private void getLeaveMessageListTemplate(String deviceSerial, int pageIndex, int pageSize,Calendar beginTime, Calendar endTime, int expectedCode){
         LogUtil.i(TAG, "getLeaveMessageList params, " + "deviceSerial:"+deviceSerial + " pageIndex:"+pageIndex + " pageSize:"+pageSize + " beginTime:"+beginTime + " endTime:"+endTime + " expectedCode:"+expectedCode);
         try {
-            List<EZLeaveMessage> LeaveMessageList =EzvizApplication.getOpenSDK().getLeaveMessageList(deviceSerial, pageIndex, pageSize, beginTime, endTime);
+            List<EZLeaveMessage> LeaveMessageList =RootActivity.getOpenSDK().getLeaveMessageList(deviceSerial, pageIndex, pageSize, beginTime, endTime);
             LogUtil.i("ReturnData", "getLeaveMessageList:" + LeaveMessageList);
         } catch (BaseException e) {
             e.printStackTrace();
@@ -507,14 +506,14 @@ public class InterfaceTestActivity extends Activity implements View.OnClickListe
     private void setLeaveMessageStatusTemplate(List<String> msgIdList, EZMessageStatus messageStatus, int expectedCode){
         LogUtil.i(TAG, "setLeaveMessageStatus params, " + "msgIdList:"+msgIdList + " messageStatus:"+messageStatus + " expectedCode:"+expectedCode );
         try {
-            EzvizApplication.getOpenSDK().setLeaveMessageStatus(msgIdList, messageStatus);
+            RootActivity.getOpenSDK().setLeaveMessageStatus(msgIdList, messageStatus);
             //verify
             try {
                 Calendar begin = Calendar.getInstance();
                 Calendar end = Calendar.getInstance();
                 begin.set(Calendar.HOUR_OF_DAY, 0);
                 end.set(Calendar.HOUR_OF_DAY, 23);
-                List<EZLeaveMessage> verifyLeaveMessageList = EzvizApplication.getOpenSDK().getLeaveMessageList(F1DeviceSerial, 0, 5, begin, end);
+                List<EZLeaveMessage> verifyLeaveMessageList = RootActivity.getOpenSDK().getLeaveMessageList(F1DeviceSerial, 0, 5, begin, end);
                 for(EZLeaveMessage temp : verifyLeaveMessageList){
                     if (temp.getMsgId().equals(msgIdList.get(0))){
                         LogUtil.i(TAG, "the value of EZMessageStatus.EZMessageStatusRead.getStatus():"+EZMessageStatus.EZMessageStatusRead.getStatus());
@@ -536,14 +535,14 @@ public class InterfaceTestActivity extends Activity implements View.OnClickListe
     private void deleteLeaveMessagesTemplate(List<String> msgIdList, int expectedCode){
         LogUtil.i(TAG, "deleteLeaveMessages params, " + "msgIdList:"+msgIdList + " expectedCode:"+expectedCode );
         try {
-            EzvizApplication.getOpenSDK().deleteLeaveMessages(msgIdList);
+            RootActivity.getOpenSDK().deleteLeaveMessages(msgIdList);
             //verify
             try {
                 Calendar begin = Calendar.getInstance();
                 Calendar end = Calendar.getInstance();
                 begin.set(Calendar.HOUR_OF_DAY, 0);
                 end.set(Calendar.HOUR_OF_DAY, 23);
-                List<EZLeaveMessage> verifyLeaveMessageList = EzvizApplication.getOpenSDK().getLeaveMessageList(F1DeviceSerial, 0, 5, begin, end);
+                List<EZLeaveMessage> verifyLeaveMessageList = RootActivity.getOpenSDK().getLeaveMessageList(F1DeviceSerial, 0, 5, begin, end);
                 for(EZLeaveMessage temp : verifyLeaveMessageList){
                     if (temp.getMsgId().equals(msgIdList.get(0))){
                         throw new BaseException("this leave id is still exist : " + msgIdList.get(0), 0);
@@ -565,7 +564,7 @@ public class InterfaceTestActivity extends Activity implements View.OnClickListe
         LogUtil.i(TAG, "formatStorage params, " + "deviceSerial:"+deviceSerial + " partitionIndex:"+partitionIndex +" expectedCode:"+expectedCode );
         try {
 
-            boolean formatResult = EzvizApplication.getOpenSDK().formatStorage(deviceSerial, partitionIndex);
+            boolean formatResult = RootActivity.getOpenSDK().formatStorage(deviceSerial, partitionIndex);
             LogUtil.i("ReturnData", "formatStorage:" + formatResult);
         } catch (BaseException e) {
             e.printStackTrace();
@@ -576,7 +575,7 @@ public class InterfaceTestActivity extends Activity implements View.OnClickListe
     private void getStorageStatusTemplate(String deviceSerial, int expectedCode){
         LogUtil.i(TAG, "getDeviceInfoBySerial params, " + "deviceSerial:"+deviceSerial + " expectedCode:"+expectedCode );
         try {
-            List<EZStorageStatus> storageList = EzvizApplication.getOpenSDK().getStorageStatus(deviceSerial);
+            List<EZStorageStatus> storageList = RootActivity.getOpenSDK().getStorageStatus(deviceSerial);
             LogUtil.i("ReturnData", "getStorageStatus:" + storageList);
         } catch (BaseException e) {
             e.printStackTrace();
@@ -587,7 +586,7 @@ public class InterfaceTestActivity extends Activity implements View.OnClickListe
     private void probeDeviceInfoTemplate(String deviceSerial, int expectedCode){
         LogUtil.i(TAG, "probeDeviceInfo params, " + "deviceSerial:"+deviceSerial + " expectedCode:"+expectedCode );
         try {
-            EZProbeDeviceInfo probeInfo = EzvizApplication.getOpenSDK().probeDeviceInfo(deviceSerial);
+            EZProbeDeviceInfo probeInfo = RootActivity.getOpenSDK().probeDeviceInfo(deviceSerial);
             LogUtil.i("ReturnData", "probeDeviceInfo:" + probeInfo);
         } catch (BaseException e) {
             e.printStackTrace();
@@ -598,7 +597,7 @@ public class InterfaceTestActivity extends Activity implements View.OnClickListe
     private void getDeviceUpgradeStatusTemplate(String deviceSerial, int expectedCode){
         LogUtil.i(TAG, "getDeviceUpgradeStatus params, " + "deviceSerial:"+deviceSerial + " expectedCode:"+expectedCode );
         try {
-            EZDeviceUpgradeStatus status = EzvizApplication.getOpenSDK().getDeviceUpgradeStatus(deviceSerial);
+            EZDeviceUpgradeStatus status = RootActivity.getOpenSDK().getDeviceUpgradeStatus(deviceSerial);
             LogUtil.i("ReturnData", "run: getDeviceUpgradeStatus" + status);
         } catch (BaseException e) {
             e.printStackTrace();
@@ -609,7 +608,7 @@ public class InterfaceTestActivity extends Activity implements View.OnClickListe
     private void upgradeDeviceTemplate(String deviceSerial, int expectedCode){
         LogUtil.i(TAG, "upgradeDevice params, " + "deviceSerial:"+deviceSerial + " expectedCode:"+expectedCode );
         try {
-            EzvizApplication.getOpenSDK().upgradeDevice(deviceSerial);
+            RootActivity.getOpenSDK().upgradeDevice(deviceSerial);
         } catch (BaseException e) {
             e.printStackTrace();
             assertEq(e.getErrorCode(), expectedCode);
@@ -620,7 +619,7 @@ public class InterfaceTestActivity extends Activity implements View.OnClickListe
     {
         LogUtil.i(TAG, "getDeviceInfoBySerial params, " + "deviceSerial:"+deviceSerial + " expectedCode:"+expectedCode );
 //        try {
-//            EZDeviceInfo info = EzvizApplication.getOpenSDK().getDeviceInfoBySerial(deviceSerial);
+//            EZDeviceInfo info = RootActivity.getOpenSDK().getDeviceInfoBySerial(deviceSerial);
 //            Log.i("ReturnData", "run: device info:" + info);
 //        } catch (BaseException e) {
 //            e.printStackTrace();
@@ -633,7 +632,7 @@ public class InterfaceTestActivity extends Activity implements View.OnClickListe
     {
         LogUtil.i(TAG, "getDeviceList params, " + "pageIndex:"+pageIndex + " pageSize:"+pageSize + " expectedCode:"+expectedCode );
         try {
-            List<EZDeviceInfo> infoList = EzvizApplication.getOpenSDK().getDeviceList(pageIndex, pageSize);
+            List<EZDeviceInfo> infoList = RootActivity.getOpenSDK().getDeviceList(pageIndex, pageSize);
             Log.i("ReturnData", "run: device info:" + infoList);
         } catch (BaseException e) {
             e.printStackTrace();
@@ -646,7 +645,7 @@ public class InterfaceTestActivity extends Activity implements View.OnClickListe
     {
         LogUtil.i(TAG, "getDetectorList params, " + "deviceSerial:"+deviceSerial + " expectedCode:"+expectedCode );
 //        try {
-//            List<EZDetectorInfo> infoList = EzvizApplication.getOpenSDK().getDetectorList(deviceSerial);
+//            List<EZDetectorInfo> infoList = RootActivity.getOpenSDK().getDetectorList(deviceSerial);
 //            Log.i("ReturnData", "run: detector info:" + infoList);
 //        } catch (BaseException e) {
 //            e.printStackTrace();
@@ -658,7 +657,7 @@ public class InterfaceTestActivity extends Activity implements View.OnClickListe
     {
         LogUtil.i(TAG, "getAlarmListBySerial params, " + "deviceSerial:"+deviceSerial + " pageIndex:"+pageIndex + " pageSize:"+pageSize  + " beginTime:"+beginTime + " endTime:"+endTime + " expectedCode:"+expectedCode );
         try {
-            List<EZAlarmInfo> infoList = EzvizApplication.getOpenSDK().getAlarmList(deviceSerial, pageIndex, pageSize, beginTime, endTime);
+            List<EZAlarmInfo> infoList = RootActivity.getOpenSDK().getAlarmList(deviceSerial, pageIndex, pageSize, beginTime, endTime);
             Log.i("ReturnData", "run: Alarm info:" + infoList);
         } catch (BaseException e) {
             e.printStackTrace();
@@ -670,7 +669,7 @@ public class InterfaceTestActivity extends Activity implements View.OnClickListe
     {
         LogUtil.i(TAG, "setDeviceDefence params, " + "deviceSerial:"+deviceSerial + " defence:"+defence + " expectedCode:"+expectedCode );
         try {
-            EzvizApplication.getOpenSDK().setDefence(deviceSerial, defence);
+            RootActivity.getOpenSDK().setDefence(deviceSerial, defence);
             //verify
             try {
                 // thread to sleep for 1000 milliseconds
@@ -679,7 +678,7 @@ public class InterfaceTestActivity extends Activity implements View.OnClickListe
                 System.out.println(e);
             }
 //            try {
-//                EZDeviceInfo temp = EzvizApplication.getOpenSDK().getDeviceInfoBySerial(deviceSerial);
+//                EZDeviceInfo temp = RootActivity.getOpenSDK().getDeviceInfoBySerial(deviceSerial);
 //                Log.i("VerifyData", "run: device info:" + temp);
 //                assertEq(temp.getIsDefence(), defence);
 //            } catch (BaseException e) {
@@ -696,12 +695,12 @@ public class InterfaceTestActivity extends Activity implements View.OnClickListe
     {
         LogUtil.i(TAG, "addDevice params, " + "deviceSerial:"+deviceSerial + " deviceCode:"+deviceCode + " expectedCode:"+expectedCode );
         try {
-            EzvizApplication.getOpenSDK().addDevice(deviceSerial, deviceCode);
+            RootActivity.getOpenSDK().addDevice(deviceSerial, deviceCode);
             //verify
             try {
                 // thread to sleep for 1000 milliseconds
                 //Thread.sleep(1000);
-                List<EZDeviceInfo> infoList = EzvizApplication.getOpenSDK().getDeviceList(0, 20);
+                List<EZDeviceInfo> infoList = RootActivity.getOpenSDK().getDeviceList(0, 20);
                 Log.i("ReturnData", "run: device info:" + infoList);
                 for (EZDeviceInfo tempDeviceInfo : infoList){
                     if(tempDeviceInfo.getDeviceSerial().equals(deviceSerial)){
@@ -722,12 +721,12 @@ public class InterfaceTestActivity extends Activity implements View.OnClickListe
     {
         LogUtil.i(TAG, "deleteDevice params, " + "deviceSerial:"+deviceSerial + " expectedCode:"+expectedCode );
         try {
-            EzvizApplication.getOpenSDK().deleteDevice(deviceSerial);
+            RootActivity.getOpenSDK().deleteDevice(deviceSerial);
             //verify
             try {
                 // thread to sleep for 1000 milliseconds
                 //Thread.sleep(1000);
-                List<EZDeviceInfo> infoList = EzvizApplication.getOpenSDK().getDeviceList(0, 20);
+                List<EZDeviceInfo> infoList = RootActivity.getOpenSDK().getDeviceList(0, 20);
                 Log.i("ReturnData", "run: device info:" + infoList);
                 for (EZDeviceInfo tempDeviceInfo : infoList){
                     if(tempDeviceInfo.getDeviceSerial().equals(deviceSerial)){
@@ -748,14 +747,14 @@ public class InterfaceTestActivity extends Activity implements View.OnClickListe
     {
         LogUtil.i(TAG, "deleteAlarm params, " + "alarmIdList:"+alarmIdList + " expectedCode:"+expectedCode );
         try {
-            EzvizApplication.getOpenSDK().deleteAlarm(alarmIdList);
+            RootActivity.getOpenSDK().deleteAlarm(alarmIdList);
             //verify
             try {
                 Calendar begin = Calendar.getInstance();
                 Calendar end = Calendar.getInstance();
                 begin.set(Calendar.HOUR_OF_DAY, 0);
                 end.set(Calendar.HOUR_OF_DAY, 23);
-                List<EZAlarmInfo> verifyAlarmList = EzvizApplication.getOpenSDK().getAlarmList(A1DeviceSerial, 0, 5, begin, end);
+                List<EZAlarmInfo> verifyAlarmList = RootActivity.getOpenSDK().getAlarmList(A1DeviceSerial, 0, 5, begin, end);
                 for(EZAlarmInfo temp : verifyAlarmList){
                     if (temp.getAlarmId().equals(alarmIdList.get(0))){
                         throw new BaseException("this leave id is still exist : " + alarmIdList.get(0), 0);
@@ -775,14 +774,14 @@ public class InterfaceTestActivity extends Activity implements View.OnClickListe
     {
         LogUtil.i(TAG, "setAlarmStatus params, " + "alarmIdList:"+alarmIdList + " alarmStatus:"+alarmStatus + " expectedCode:"+expectedCode );
         try {
-            EzvizApplication.getOpenSDK().setAlarmStatus(alarmIdList, alarmStatus);
+            RootActivity.getOpenSDK().setAlarmStatus(alarmIdList, alarmStatus);
             //verify
             try {
                 Calendar begin = Calendar.getInstance();
                 Calendar end = Calendar.getInstance();
                 begin.set(Calendar.HOUR_OF_DAY, 0);
                 end.set(Calendar.HOUR_OF_DAY, 23);
-                List<EZAlarmInfo> verifyAlarmList = EzvizApplication.getOpenSDK().getAlarmList(A1DeviceSerial, 0, 5, begin, end);
+                List<EZAlarmInfo> verifyAlarmList = RootActivity.getOpenSDK().getAlarmList(A1DeviceSerial, 0, 5, begin, end);
                 for(EZAlarmInfo temp : verifyAlarmList){
                     if (temp.getAlarmId().equals(alarmIdList.get(0))){
                         assertEq(temp.getIsRead(), alarmStatus.getAlarmStatus()-1);
@@ -802,10 +801,10 @@ public class InterfaceTestActivity extends Activity implements View.OnClickListe
     {
         LogUtil.i(TAG, "setDefence params, " + "isDefence:"+isDefence + " deviceSerial:"+deviceSerial + " expectedCode:"+expectedCode );
 //        try {
-//            EzvizApplication.getOpenSDK().setDefence(isDefence, deviceSerial);
+//            RootActivity.getOpenSDK().setDefence(isDefence, deviceSerial);
 //            //verify
 //            try {
-//                List<EZDeviceInfo> infoList = EzvizApplication.getOpenSDK().getDeviceList(0, 20);
+//                List<EZDeviceInfo> infoList = RootActivity.getOpenSDK().getDeviceList(0, 20);
 //                Log.i("ReturnData", "run: device info:" + infoList);
 //                for (EZDeviceInfo tempDeviceInfo : infoList){
 //                    if(tempDeviceInfo.getDeviceSerial().equals(deviceSerial)){

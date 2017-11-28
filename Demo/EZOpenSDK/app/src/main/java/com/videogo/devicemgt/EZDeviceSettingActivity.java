@@ -255,79 +255,59 @@ public class EZDeviceSettingActivity extends RootActivity {
                 @Override
                 public void onClick(View v) {
                     Intent intent;
-                    switch (v.getId()) {
-                        case R.id.device_info_layout:
-                            intent = new Intent(EZDeviceSettingActivity.this, ModifyDeviceNameActivity.class);
-                            intent.putExtra(IntentConsts.EXTRA_NAME, mEZDeviceInfo.getDeviceName());
-                            intent.putExtra(IntentConsts.EXTRA_DEVICE_ID,mEZDeviceInfo.getDeviceSerial());
-                            startActivityForResult(intent, REQUEST_CODE_MODIFY_DEVICE_NAME);
-                            break;
-
-                        case R.id.ez_device_serial_layout:
-                            try {
-                                if (EzvizApplication.getOpenSDK() instanceof EZOpenSDK) {
-                                    EZOpenSDK.getInstance().openCloudPage(mEZDeviceInfo.getDeviceSerial());
-                                }
-                            }catch (BaseException e) {
-                                e.printStackTrace();
-
-                                ErrorInfo errorInfo = (ErrorInfo) e.getObject();
-                                LogUtil.debugLog(TAG, errorInfo.toString());
+                    if (v.getId() == R.id.device_info_layout) {
+                        intent = new Intent(EZDeviceSettingActivity.this, ModifyDeviceNameActivity.class);
+                        intent.putExtra(IntentConsts.EXTRA_NAME, mEZDeviceInfo.getDeviceName());
+                        intent.putExtra(IntentConsts.EXTRA_DEVICE_ID, mEZDeviceInfo.getDeviceSerial());
+                        startActivityForResult(intent, REQUEST_CODE_MODIFY_DEVICE_NAME);
+                    } else if (v.getId() == R.id.ez_device_serial_layout) {
+                        try {
+                            if (getOpenSDK().getClass().isInstance(EZOpenSDK.class)) {
+                                EZOpenSDK.getInstance().openCloudPage(mEZDeviceInfo.getDeviceSerial());
                             }
+                        } catch (BaseException e) {
+                            e.printStackTrace();
 
-                            break;
+                            ErrorInfo errorInfo = (ErrorInfo) e.getObject();
+                            LogUtil.debugLog(TAG, errorInfo.toString());
+                        }
 
-                        case R.id.defence_layout:
-                        case R.id.defence_toggle_button:
-                        	new SetDefenceTask().execute(!(mEZDeviceInfo.getDefence() != 0));
-                        	break;
 
-                        case R.id.defence_plan_button:
-                            setDefencePlanNew(false);
-                            break;
+                    } else if (v.getId() == R.id.defence_layout) {
 
-                        case R.id.defence_plan_status_retry:
-                            setDefencePlanNew(false);
-                            break;
+                    } else if (v.getId() == R.id.defence_toggle_button) {
+                        new SetDefenceTask().execute(!(mEZDeviceInfo.getDefence() != 0));
 
-                        case R.id.defence_plan_set_layout:
-                            if (mDefencePlanArrowView.getVisibility() == View.VISIBLE) {
-                            }
-                            setDefencePlanNew(false);
-                            break;
+                    } else if (v.getId() == R.id.defence_plan_button) {
+                        setDefencePlanNew(false);
 
-                        case R.id.defence_plan_retry:
-                            setDefencePlanNew(false);
-                            break;
+                    } else if (v.getId() == R.id.defence_plan_status_retry) {
+                        setDefencePlanNew(false);
 
-                        case R.id.storage_layout:
-                            break;
+                    } else if (v.getId() == R.id.defence_plan_set_layout) {
+                        if (mDefencePlanArrowView.getVisibility() == View.VISIBLE) {
+                        }
+                        setDefencePlanNew(false);
 
-                        case R.id.version_layout:
-                            intent = new Intent(EZDeviceSettingActivity.this, EZUpgradeDeviceActivity.class);
-                            intent.putExtra("deviceSerial", mEZDeviceInfo.getDeviceSerial());
-                            startActivity(intent);
-                            break;
+                    } else if (v.getId() == R.id.defence_plan_retry) {
+                        setDefencePlanNew(false);
 
-                        case R.id.encrypt_button:
-                            gotoSetSafeMode();
-                            break;
+                    } else if (v.getId() == R.id.storage_layout) {
 
-                        case R.id.modify_password_layout:
-                            gotoModifyPassword();
-                            break;
+                    } else if (v.getId() == R.id.version_layout) {
+                        intent = new Intent(EZDeviceSettingActivity.this, EZUpgradeDeviceActivity.class);
+                        intent.putExtra("deviceSerial", mEZDeviceInfo.getDeviceSerial());
+                        startActivity(intent);
 
-                        case R.id.mirror_layout:
-                            LogUtil.debugLog(TAG, "画面翻转");
-                            new SetMirrorTask().execute(true);
-                            break;
+                    } else if (v.getId() == R.id.encrypt_button) {
+                        gotoSetSafeMode();
 
-//                        case R.id.device_delete:
-//                            showDialog(SHOW_DIALOG_DEL_DEVICE);
-//                            break;
+                    } else if (v.getId() == R.id.modify_password_layout) {
+                        gotoModifyPassword();
 
-                        default:
-                            break;
+                    } else if (v.getId() == R.id.mirror_layout) {
+                        LogUtil.debugLog(TAG, "画面翻转");
+                        new SetMirrorTask().execute(true);
                     }
                 }
             };
