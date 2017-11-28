@@ -61,18 +61,15 @@ public class LoginSelectActivity extends Activity implements OnClickListener{
     @Override
     public void onClick(View v) {
         Intent intent = null;
-        switch(v.getId()) {
-        	case R.id.interface_call_btn:
-                if (TextUtils.isEmpty(EzvizApplication.AppKey)){
+        if (v.getId() == R.id.interface_call_btn) {
+            f (TextUtils.isEmpty(EzvizApplication.AppKey)){
                     Toast.makeText(this,"Appkey为空",Toast.LENGTH_LONG).show();
                     return;
                 }
-        		intent = new Intent(LoginSelectActivity.this, InterfaceDemoActivity.class);
+                intent = new Intent(LoginSelectActivity.this, InterfaceDemoActivity.class);
                 startActivity(intent);
-//                EzvizApplication.getOpenSDK().stopPushService();
-        		break;
-            case R.id.web_login_btn:
-                if (TextUtils.isEmpty(EzvizApplication.AppKey)){
+        }else if (v.getId() == R.id.web_login_btn) {
+            if (TextUtils.isEmpty(EzvizApplication.AppKey)){
                     Toast.makeText(this,"Appkey为空",Toast.LENGTH_LONG).show();
                     return;
                 }
@@ -82,16 +79,11 @@ public class LoginSelectActivity extends Activity implements OnClickListener{
 //                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 //                intent.putExtra(IntentConsts.EXTRA_WEBVIEW_ACTION, EzvizWebViewActivity.WEBVIEW_ACTION_CLOUDPAGE);
 //                startActivity(intent);
-                break;
-            case R.id.goto_cameralist_btn:
-                openPlatformLoginDialog();
-                break;
-            case R.id.id_ll_join_qq_group:
-                String key = "p57CNgQ_uf2gZMY0eYTvgQ_S_ZDzZz44";
-                joinQQGroup(key);
-                break;
-            default:
-                break;
+        }else if (v.getId() == R.id.goto_cameralist_btn) {
+            openPlatformLoginDialog();
+        }else if (v.getId() == R.id.id_ll_join_qq_group) {
+            String key = "p57CNgQ_uf2gZMY0eYTvgQ_S_ZDzZz44";
+            joinQQGroup(key);
         }
     }
     

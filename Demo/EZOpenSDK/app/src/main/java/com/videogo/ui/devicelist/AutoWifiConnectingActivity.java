@@ -732,35 +732,25 @@ public class AutoWifiConnectingActivity extends RootActivity implements OnClickL
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.btnBack:
-                onBackPressed();
+        int viewId = v.getId();
+        if (viewId == R.id.btnBack) {
+            onBackPressed();
 
-                break;
-            case R.id.cancel_btn:
-                cancelOnClick();
-                break;
-            case R.id.btnRetry:
-                retryOnclick();
-                break;
-            case R.id.btnLineConnet:
-                lineConnectClick();
-                break;
-            case R.id.btnLineConnetOk:
-                lineConnectOkClick();
-                break;
-            case R.id.btnFinish:
-                finishOnClick();
-                break;
-            case R.id.tvMore:
-                moreOnClick();
-                break;
-            case R.id.help:
-                helpOnclick();
-                break;
+        } else if (viewId == R.id.cancel_btn) {
+            cancelOnClick();
+        } else if (viewId == R.id.btnRetry) {
+            retryOnclick();
+        } else if (viewId == R.id.btnLineConnet) {
+            lineConnectClick();
+        } else if (viewId == R.id.btnLineConnetOk) {
+            lineConnectOkClick();
+        } else if (viewId == R.id.btnFinish) {
+            finishOnClick();
+        } else if (viewId == R.id.tvMore) {
+            moreOnClick();
+        } else if (viewId == R.id.help) {
+            helpOnclick();
 
-            default:
-                break;
         }
     }
 

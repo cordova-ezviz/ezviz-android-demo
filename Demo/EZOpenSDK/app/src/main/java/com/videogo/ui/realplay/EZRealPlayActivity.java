@@ -1377,67 +1377,52 @@ public class EZRealPlayActivity extends Activity implements OnClickListener, Sur
      */
     @Override
     public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.realplay_play_btn:
-            case R.id.realplay_full_play_btn:
-            case R.id.realplay_play_iv:
-                if (mStatus != RealPlayStatus.STATUS_STOP) {
-                    stopRealPlay();
-                    setRealPlayStopUI();
-                } else {
-                    startRealPlay();
-                }
-                break;
-            case R.id.realplay_previously_btn:
-            case R.id.realplay_previously_btn2:
-            case R.id.realplay_full_previously_btn:
-                onCapturePicBtnClick();
-                break;
-            case R.id.realplay_capture_rl:
-                onCaptureRlClick();
-                break;
-            case R.id.realplay_video_btn:
-            case R.id.realplay_video_start_btn:
-            case R.id.realplay_video_btn2:
-            case R.id.realplay_video_start_btn2:
-            case R.id.realplay_full_video_btn:
-            case R.id.realplay_full_video_start_btn:
-                onRecordBtnClick();
-                break;
-            case R.id.realplay_talk_btn:
-            case R.id.realplay_talk_btn2:
-            case R.id.realplay_full_talk_btn:
-                startVoiceTalk();
-                break;
+        int viewId = view.getId();
+        if (viewId == R.id.realplay_play_btn
+                || viewId == R.id.realplay_full_play_btn
+                || viewId == R.id.realplay_play_iv) {
+            if (mStatus != RealPlayStatus.STATUS_STOP) {
+                stopRealPlay();
+                setRealPlayStopUI();
+            } else {
+                startRealPlay();
+            }
+        } else if (viewId == R.id.realplay_previously_btn
+                || viewId == R.id.realplay_previously_btn2
+                || viewId == R.id.realplay_full_previously_btn) {
+            onCapturePicBtnClick();
+        } else if (viewId == R.id.realplay_capture_rl) {
+            onCaptureRlClick();
+        } else if (viewId == R.id.realplay_video_btn
+                || viewId == R.id.realplay_video_start_btn
+                || viewId == R.id.realplay_video_btn2
+                || viewId == R.id.realplay_video_start_btn2
+                || viewId == R.id.realplay_full_video_btn
+                || viewId == R.id.realplay_full_video_start_btn) {
+            onRecordBtnClick();
+        } else if (viewId == R.id.realplay_talk_btn
+                || viewId == R.id.realplay_talk_btn2
+                || viewId == R.id.realplay_full_talk_btn) {
+            startVoiceTalk();
+        } else if (viewId == R.id.realplay_quality_btn) {
+            openQualityPopupWindow(mRealPlayQualityBtn);
+        } else if (viewId == R.id.realplay_ptz_btn
+                || viewId == R.id.realplay_ptz_btn2) {
+            openPtzPopupWindow(mRealPlayPlayRl);
+        } else if (viewId == R.id.realplay_full_ptz_btn) {
+            setFullPtzStartUI(true);
+        } else if (viewId == R.id.realplay_full_ptz_anim_btn) {
+            setFullPtzStopUI(true);
+        } else if (viewId == R.id.realplay_sound_btn
+                || viewId == R.id.realplay_full_sound_btn) {
+            onSoundBtnClick();
+        } else if (viewId == R.id.realplay_full_talk_anim_btn) {
+            closeTalkPopupWindow(true, true);
 
-            case R.id.realplay_quality_btn:
-                openQualityPopupWindow(mRealPlayQualityBtn);
-                break;
-            case R.id.realplay_ptz_btn:
-            case R.id.realplay_ptz_btn2:
-                openPtzPopupWindow(mRealPlayPlayRl);
-                break;
-            case R.id.realplay_full_ptz_btn:
-                setFullPtzStartUI(true);
-                break;
-            case R.id.realplay_full_ptz_anim_btn:
-                setFullPtzStopUI(true);
-                break;
-            case R.id.realplay_sound_btn:
-            case R.id.realplay_full_sound_btn:
-                onSoundBtnClick();
-                break;
-            case R.id.realplay_full_talk_anim_btn:
-                closeTalkPopupWindow(true, true);
-                break;
-            case R.id.realplay_spec_btn:
-                this.SendEvent("click","0");
-                break;
-            case R.id.realplay_light_btn:
-                this.SendEvent("click","1");
-                break;
-            default:
-                break;
+        } else if (viewId == R.id.realplay_spec_btn){
+            this.SendEvent("click","0");
+        }else if (viewId == R.id.realplay_light_btn){
+            this.SendEvent("click","1");
         }
     }
 
@@ -1633,27 +1618,20 @@ public class EZRealPlayActivity extends Activity implements OnClickListener, Sur
     private OnClickListener mOnPopWndClickListener = new OnClickListener() {
         @Override
         public void onClick(View v) {
-            switch (v.getId()) {
-                case R.id.quality_hd_btn:
-                    setQualityMode(EZVideoLevel.VIDEO_LEVEL_HD);
-                    break;
-                case R.id.quality_balanced_btn:
-                    setQualityMode(EZVideoLevel.VIDEO_LEVEL_BALANCED);
-                    break;
-                case R.id.quality_flunet_btn:
-                    setQualityMode(EZVideoLevel.VIDEO_LEVEL_FLUNET);
-                    break;
-                case R.id.ptz_close_btn:
-                    closePtzPopupWindow();
-                    break;
-                case R.id.ptz_flip_btn:
-                    //                    setPtzFlip();
-                    break;
-                case R.id.talkback_close_btn:
-                    closeTalkPopupWindow(true, false);
-                    break;
-                default:
-                    break;
+            int viewId = v.getId();
+            if (R.id.quality_hd_btn == viewId) {
+                setQualityMode(EZVideoLevel.VIDEO_LEVEL_HD);
+            } else if (R.id.quality_balanced_btn == viewId) {
+                setQualityMode(EZVideoLevel.VIDEO_LEVEL_BALANCED);
+            } else if (R.id.quality_flunet_btn == viewId) {
+                setQualityMode(EZVideoLevel.VIDEO_LEVEL_FLUNET);
+            } else if (R.id.ptz_close_btn == viewId) {
+                closePtzPopupWindow();
+            } else if (R.id.ptz_flip_btn == viewId) {
+                //                    setPtzFlip();
+            } else if (R.id.talkback_close_btn == viewId) {
+                closeTalkPopupWindow(true, false);
+
             }
         }
     };
@@ -1689,59 +1667,45 @@ public class EZRealPlayActivity extends Activity implements OnClickListener, Sur
             final int speed = EZConstants.PTZ_SPEED_DEFAULT;
             switch (action) {
                 case MotionEvent.ACTION_DOWN:
-                    switch (view.getId()) {
-                        case R.id.talkback_control_btn:
-                            mTalkRingView.setVisibility(View.VISIBLE);
-                            mEZPlayer.setVoiceTalkStatus(true);
-                            break;
-                        case R.id.ptz_top_btn:
-                            mPtzControlLy.setBackgroundResource(R.drawable.ptz_up_sel);
-                            setPtzDirectionIv(RealPlayStatus.PTZ_UP);
-                            ptzOption(EZPTZCommand.EZPTZCommandUp, EZPTZAction.EZPTZActionSTART);
-                            break;
-                        case R.id.ptz_bottom_btn:
-                            mPtzControlLy.setBackgroundResource(R.drawable.ptz_bottom_sel);
-                            setPtzDirectionIv(RealPlayStatus.PTZ_DOWN);
-                            ptzOption(EZPTZCommand.EZPTZCommandDown, EZPTZAction.EZPTZActionSTART);
-                            break;
-                        case R.id.ptz_left_btn:
-                            mPtzControlLy.setBackgroundResource(R.drawable.ptz_left_sel);
-                            setPtzDirectionIv(RealPlayStatus.PTZ_LEFT);
-                            ptzOption(EZPTZCommand.EZPTZCommandLeft, EZPTZAction.EZPTZActionSTART);
-                            break;
-                        case R.id.ptz_right_btn:
-                            mPtzControlLy.setBackgroundResource(R.drawable.ptz_right_sel);
-                            setPtzDirectionIv(RealPlayStatus.PTZ_RIGHT);
-                            ptzOption(EZPTZCommand.EZPTZCommandRight, EZPTZAction.EZPTZActionSTART);
-                            break;
-                        default:
-                            break;
+                    if (R.id.talkback_control_btn == viewId) {
+                        mTalkRingView.setVisibility(View.VISIBLE);
+                        mEZPlayer.setVoiceTalkStatus(true);
+                    } else if (R.id.ptz_top_btn == viewId) {
+                        mPtzControlLy.setBackgroundResource(R.drawable.ptz_up_sel);
+                        setPtzDirectionIv(RealPlayStatus.PTZ_UP);
+                        ptzOption(EZPTZCommand.EZPTZCommandUp, EZPTZAction.EZPTZActionSTART);
+                    } else if (R.id.ptz_bottom_btn == viewId) {
+                        mPtzControlLy.setBackgroundResource(R.drawable.ptz_bottom_sel);
+                        setPtzDirectionIv(RealPlayStatus.PTZ_DOWN);
+                        ptzOption(EZPTZCommand.EZPTZCommandDown, EZPTZAction.EZPTZActionSTART);
+                    } else if (R.id.ptz_left_btn == viewId) {
+                        mPtzControlLy.setBackgroundResource(R.drawable.ptz_left_sel);
+                        setPtzDirectionIv(RealPlayStatus.PTZ_LEFT);
+                        ptzOption(EZPTZCommand.EZPTZCommandLeft, EZPTZAction.EZPTZActionSTART);
+                    } else if (R.id.ptz_right_btn == viewId) {
+                        mPtzControlLy.setBackgroundResource(R.drawable.ptz_right_sel);
+                        setPtzDirectionIv(RealPlayStatus.PTZ_RIGHT);
+                        ptzOption(EZPTZCommand.EZPTZCommandRight, EZPTZAction.EZPTZActionSTART);
+
                     }
                     break;
                 case MotionEvent.ACTION_UP:
-                    switch (view.getId()) {
-                        case R.id.talkback_control_btn:
-                            mEZPlayer.setVoiceTalkStatus(false);
-                            mTalkRingView.setVisibility(View.GONE);
-                            break;
-                        case R.id.ptz_top_btn:
-                            mPtzControlLy.setBackgroundResource(R.drawable.ptz_bg);
-                            ptzOption(EZPTZCommand.EZPTZCommandUp, EZPTZAction.EZPTZActionSTOP);
-                            break;
-                        case R.id.ptz_bottom_btn:
-                            mPtzControlLy.setBackgroundResource(R.drawable.ptz_bg);
-                            ptzOption(EZPTZCommand.EZPTZCommandDown, EZPTZAction.EZPTZActionSTOP);
-                            break;
-                        case R.id.ptz_left_btn:
-                            mPtzControlLy.setBackgroundResource(R.drawable.ptz_bg);
-                            ptzOption(EZPTZCommand.EZPTZCommandLeft, EZPTZAction.EZPTZActionSTOP);
-                            break;
-                        case R.id.ptz_right_btn:
-                            mPtzControlLy.setBackgroundResource(R.drawable.ptz_bg);
-                            ptzOption(EZPTZCommand.EZPTZCommandRight, EZPTZAction.EZPTZActionSTOP);
-                            break;
-                        default:
-                            break;
+                    if (R.id.talkback_control_btn == viewId) {
+                        mEZPlayer.setVoiceTalkStatus(false);
+                        mTalkRingView.setVisibility(View.GONE);
+                    } else if (R.id.ptz_top_btn == viewId) {
+                        mPtzControlLy.setBackgroundResource(R.drawable.ptz_bg);
+                        ptzOption(EZPTZCommand.EZPTZCommandUp, EZPTZAction.EZPTZActionSTOP);
+                    } else if (R.id.ptz_bottom_btn == viewId) {
+                        mPtzControlLy.setBackgroundResource(R.drawable.ptz_bg);
+                        ptzOption(EZPTZCommand.EZPTZCommandDown, EZPTZAction.EZPTZActionSTOP);
+                    } else if (R.id.ptz_left_btn == viewId) {
+                        mPtzControlLy.setBackgroundResource(R.drawable.ptz_bg);
+                        ptzOption(EZPTZCommand.EZPTZCommandLeft, EZPTZAction.EZPTZActionSTOP);
+                    } else if (R.id.ptz_right_btn == viewId) {
+                        mPtzControlLy.setBackgroundResource(R.drawable.ptz_bg);
+                        ptzOption(EZPTZCommand.EZPTZCommandRight, EZPTZAction.EZPTZActionSTOP);
+
                     }
                     break;
                 default:
@@ -3324,14 +3288,13 @@ public class EZRealPlayActivity extends Activity implements OnClickListener, Sur
      */
     @Override
     public boolean onTouch(View v, MotionEvent event) {
-        switch (v.getId()) {
-            case R.id.realplay_pages_gallery:
-                mRealPlayTouchListener.touch(event);
-                break;
-            case R.id.realplay_full_operate_bar:
-                return true;
-            default:
-                break;
+        int viewId = v.getId();
+        if (R.id.realplay_pages_gallery == viewId) {
+            mRealPlayTouchListener.touch(event);
+
+        } else if (R.id.realplay_full_operate_bar == viewId) {
+            return true;
+
         }
         return false;
     }

@@ -270,40 +270,34 @@ public class EZMessageActivity2 extends RootActivity implements VerifyCodeInput.
 
             @Override
             public void onClick(View v) {
-                switch (v.getId()) {
-                    case R.id.retry_button:
-                        refreshButtonClicked();
-                        break;
+                int viewId = v.getId();
+                if (viewId == R.id.retry_button) {
+                    refreshButtonClicked();
+                } else if (viewId == R.id.no_message_layout) {
+                    refreshButtonClicked();
+                } else if (viewId == R.id.check_mode_top) {
+                    mCheckAllView.toggle();
 
-                    case R.id.no_message_layout:
-                        refreshButtonClicked();
-                        break;
 
-                    case R.id.check_mode_top:
-                        mCheckAllView.toggle();
-                    case R.id.check_all:
-                        if (mCheckAllView.isChecked()) {
-                        }
-                        if (mCheckAllView.isChecked())
-                            mAdapter.checkAll();
-                        else
-                            mAdapter.uncheckAll();
-                        setupCheckModeLayout(false);
-                        break;
-
-                    case R.id.del_button:
-                        deleteMessage(mAdapter.getCheckedIds());
-                        break;
-
-                    case R.id.read_button:
-                        new CheckAlarmInfoTask2(true).execute(mAdapter.getCheckedIds());
-                        break;
-
-                    case R.id.no_message_button:
+                } else if (viewId == R.id.check_all) {
+                    mCheckAllView.toggle();
+                    if (mCheckAllView.isChecked()) {
+                    }
+                    if (mCheckAllView.isChecked())
+                        mAdapter.checkAll();
+                    else
+                        mAdapter.uncheckAll();
+                    setupCheckModeLayout(false);
+                } else if (viewId == R.id.del_button) {
+                    deleteMessage(mAdapter.getCheckedIds());
+                } else if (viewId == R.id.read_button) {
+                    deleteMessage(mAdapter.getCheckedIds());
+                    new CheckAlarmInfoTask2(true).execute(mAdapter.getCheckedIds());
+                } else if (viewId == R.id.no_message_button){
 //                        WebUtils.openYsStore(EZMessageActivity2.this, null);
-                        break;
-                }
+
             }
+        }
         };
 
         mRefreshButton.setOnClickListener(clickListener);

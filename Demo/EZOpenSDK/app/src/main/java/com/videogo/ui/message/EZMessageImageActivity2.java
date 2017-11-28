@@ -198,8 +198,8 @@ public class EZMessageImageActivity2 extends RootActivity implements VerifyCodeI
 
             @Override
             public void onClick(View v) {
-                    switch (v.getId()) {
-                        case R.id.video_button:
+                    if (v.getId() == R.id.video_button) {
+
 //                            RemotePlayBackUtils.goToMessageVideoActivity(EZMessageImageActivity2.this, alarm, true);
 //                            overridePendingTransition(R.anim.window_anim_slide_in_right, R.anim.window_anim_fade_out);
 
@@ -209,7 +209,7 @@ public class EZMessageImageActivity2 extends RootActivity implements VerifyCodeI
                             intent.putExtra(IntentConsts.EXTRA_ALARM_INFO, mEZAlarmInfo);
 
                             startActivity(intent);
-                            break;
+
                     }
             }
 

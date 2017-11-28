@@ -409,8 +409,9 @@ public class EZMessageListAdapter2 extends BaseAdapter implements View.OnClickLi
     @Override
     public void onClick(View v) {
         int position;
-        switch (v.getId()) {
-            case R.id.message_layout:
+        int viewId = v.getId();
+
+            if( viewId ==  R.id.message_layout) {
                 position = (Integer) v.getTag(R.id.tag_key_position);
 
                 if (mCheckMode) {
@@ -423,15 +424,13 @@ public class EZMessageListAdapter2 extends BaseAdapter implements View.OnClickLi
                     if (mOnClickListener != null)
                         mOnClickListener.onItemClick(EZMessageListAdapter2.this, v, position);
                 }
-                break;
-
-            case R.id.message_check:
+            }else if(viewId == R.id.message_check){
                 position = (Integer) v.getTag(R.id.tag_key_position);
                 boolean check = ((CheckBox) v).isChecked();
 
                 if (mOnClickListener != null)
                     mOnClickListener.onCheckClick(EZMessageListAdapter2.this, v, position, check);
-                break;
+
         }
     }
 
