@@ -684,36 +684,28 @@ public class PlayBackListActivity extends RootActivity implements QueryPlayBackL
     }
 
     private void showTab(int id) {
-    	switch (id) {
-    	case R.id.novideo_img:
-    		novideoImg.setVisibility(View.VISIBLE);
-    		loadingBar.setVisibility(View.GONE);
-    		mTabContentMainFrame.setVisibility(View.VISIBLE);
-    		break;
-    	case R.id.novideo_img_device:
+        if (id == R.id.novideo_img) {
+            novideoImg.setVisibility(View.VISIBLE);
+            loadingBar.setVisibility(View.GONE);
+            mTabContentMainFrame.setVisibility(View.VISIBLE);
+        }else if (id == R.id.novideo_img_device) {:
     		mNoVideoImgLocal.setVisibility(View.VISIBLE);
     		mPinnedHeaderListViewForLocal.setVisibility(View.GONE);
     		loadingBar.setVisibility(View.GONE);
     		mTabContentMainFrame.setVisibility(View.VISIBLE);
-    		break;
-    	case R.id.loadingTextView:
-    		novideoImg.setVisibility(View.GONE);
-    		loadingBar.setVisibility(View.VISIBLE);
-    		mTabContentMainFrame.setVisibility(View.GONE);
-    		break;
-    	case R.id.content_tab_device_root:
+        }else if (id == R.id.loadingTextView) {
+            novideoImg.setVisibility(View.GONE);
+            loadingBar.setVisibility(View.VISIBLE);
+            mTabContentMainFrame.setVisibility(View.GONE);
+        }else if (id == R.id.content_tab_device_root) {
     		mNoVideoImgLocal.setVisibility(View.GONE);
     		loadingBar.setVisibility(View.GONE);
     		mTabContentMainFrame.setVisibility(View.VISIBLE);
-    		break;
-    	case R.id.ez_tab_content_frame:
+        }else if (id == R.id.ez_tab_content_frame) {
     		novideoImg.setVisibility(View.GONE);
     		loadingBar.setVisibility(View.GONE);
     		mTabContentMainFrame.setVisibility(View.VISIBLE);
-    		break;
-    	default:
-    		break;
-    	}
+        }
     }
     private void showDownPopup() {
         
@@ -2696,56 +2688,42 @@ public class PlayBackListActivity extends RootActivity implements QueryPlayBackL
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
+        int viewId = v.getId();
         // TODO
-            case R.id.query_exception_ly:
-                onQueryExceptionLayoutTouched();
-                break;
-            case R.id.cancel_auto_play_btn:
-                autoLayout.setVisibility(View.GONE);
+        if (R.id.query_exception_ly == viewId) {
+            onQueryExceptionLayoutTouched();
+        } else if (R.id.cancel_auto_play_btn == viewId) {
+            autoLayout.setVisibility(View.GONE);
 //                LocalInfo.getInstance().setNextPlayPrompt(false);
-                break;
-            case R.id.loading_play_btn:
-                notPause = true;
-                pauseBtn.setBackgroundResource(R.drawable.remote_list_pause_btn_selector);
-                pausePlay();
-                break;
-            case R.id.error_replay_btn:
-            case R.id.replay_btn:
-                onReplayBtnClick();
-                break;
-            case R.id.next_play_btn:
-                onNextPlayBtnClick();
-                break;
-            case R.id.remote_playback_pause_btn:
-                onPlayPauseBtnClick();
-                break;
-            case R.id.remote_playback_sound_btn:
-                onSoundBtnClick();
-                break;
-            case R.id.remote_playback_capture_btn:
-                onCapturePicBtnClick();
-                break;
-            case R.id.remote_playback_video_recording_btn:
-                onRecordBtnClick();
-                break;
-            case R.id.remoteplayback_capture_rl:
+        } else if (R.id.loading_play_btn == viewId) {
+            notPause = true;
+            pauseBtn.setBackgroundResource(R.drawable.remote_list_pause_btn_selector);
+            pausePlay();
+        } else if (R.id.error_replay_btn == viewId ||
+                R.id.replay_btn == viewId) {
+            onReplayBtnClick();
+        } else if (R.id.next_play_btn == viewId) {
+            onNextPlayBtnClick();
+        } else if (R.id.remote_playback_pause_btn == viewId) {
+            onPlayPauseBtnClick();
+        } else if (R.id.remote_playback_sound_btn == viewId) {
+            onSoundBtnClick();
+        } else if (R.id.remote_playback_capture_btn == viewId) {
+            onCapturePicBtnClick();
+        } else if (R.id.remote_playback_video_recording_btn == viewId) {
+            onRecordBtnClick();
+        } else if (R.id.remoteplayback_capture_rl == viewId) {
 //                onCaptureRlClick();
-                break;
-            case R.id.exit_btn:
-                onPlayExitBtnOnClick();
-                break;
-            case R.id.control_area:
-                break;
-            case R.id.delete_playback:
-                if (sectionAdapter != null && sectionAdapter.getSelectedCloudFiles().size() < 1) {
+        } else if (R.id.exit_btn == viewId) {
+            onPlayExitBtnOnClick();
+        } else if (R.id.control_area == viewId) {
+        } else if (R.id.delete_playback == viewId) {
+            if (sectionAdapter != null && sectionAdapter.getSelectedCloudFiles().size() < 1) {
 //                    showToast(R.string.please_select_delete_video_files);
-                } else {
-                    showDelDialog();
-                }
-                break;
-            default:
-                break;
+            } else {
+                showDelDialog();
+            }
+
         }
     }
 
@@ -3036,17 +3014,13 @@ public class PlayBackListActivity extends RootActivity implements QueryPlayBackL
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
-        switch (v.getId()) {
-            case R.id.remote_playback_area:
-                onPlayAreaTouched();
-                break;
-            case R.id.control_area:
-                break;
-            case R.id.query_exception_ly:
-                onQueryExceptionLayoutTouched();
-                break;
-            default:
-                break;
+        int viewId = (v.getId());
+        if (viewId == R.id.remote_playback_area) {
+            onPlayAreaTouched();
+        } else if (R.id.control_area == viewId) {
+        } else if (R.id.query_exception_ly == viewId) {
+            onQueryExceptionLayoutTouched();
+
         }
         return false;
     }
