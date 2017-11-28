@@ -30,22 +30,16 @@ public class InterfaceDemoActivity extends Activity implements OnClickListener{
     @Override
     public void onClick(View v) {
         Intent intent  = null;
-        switch(v.getId()) {
-            case R.id.ez_square_btn: 
+        if (v.getId() == R.id.ez_square_btn) {
 
-                break;
-            case R.id.ez_platform_login_btn:
-                break;
-            case R.id.ez_v32_api_test:
-                Intent i = new Intent(InterfaceDemoActivity.this, InterfaceTestActivity.class);
-                startActivity(i);
-                break;
-            case R.id.ez_api_self_test:
-                intent = new Intent(InterfaceDemoActivity.this, InterfaceSelfTestActivity.class);
-                startActivity(intent);
-                break;
-            default:
-                break;
+        }else if (v.getId() == R.id.ez_platform_login_btn) {
+
+        }else if (v.getId() == R.id.ez_v32_api_test) {
+            Intent i = new Intent(InterfaceDemoActivity.this, InterfaceTestActivity.class);
+            startActivity(i);
+        }else if (v.getId() == R.id.ez_api_self_test) {
+            intent = new Intent(InterfaceDemoActivity.this, InterfaceSelfTestActivity.class);
+            startActivity(intent);
         }
     }
 

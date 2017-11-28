@@ -276,38 +276,25 @@ public class EZCameraListAdapter extends BaseAdapter {
         public void onClick(View v) {
             if (mListener != null) {
                 int position = (Integer) v.getTag();
-                switch (v.getId()) {
-                    case R.id.item_play_btn:
-                        mListener.onPlayClick(EZCameraListAdapter.this, v, position);
-                        break;
+                int viewId = v.getId();
 
-                    case R.id.tab_remoteplayback_btn:
-                        mListener.onRemotePlayBackClick(EZCameraListAdapter.this, v, position);
-                        break;
+                if (viewId == R.id.item_play_btn) {
+                    mListener.onPlayClick(EZCameraListAdapter.this, v, position);
+                } else if (viewId == R.id.tab_remoteplayback_btn) {
+                    mListener.onRemotePlayBackClick(EZCameraListAdapter.this, v, position);
+                } else if (viewId == R.id.tab_alarmlist_btn) {
+                    mListener.onAlarmListClick(EZCameraListAdapter.this, v, position);
+                } else if (viewId == R.id.tab_setdevice_btn) {
+                    mListener.onSetDeviceClick(EZCameraListAdapter.this, v, position);
+                } else if (viewId == R.id.camera_del_btn) {
+                    mListener.onDeleteClick(EZCameraListAdapter.this, v, position);
+                } else if (viewId == R.id.tab_devicepicture_btn) {
+                    mListener.onDevicePictureClick(EZCameraListAdapter.this, v, position);
+                } else if (viewId == R.id.tab_devicevideo_btn) {
+                    mListener.onDeviceVideoClick(EZCameraListAdapter.this, v, position);
+                } else if (viewId == R.id.tab_devicedefence_btn) {
+                    mListener.onDeviceDefenceClick(EZCameraListAdapter.this, v, position);
 
-                    case R.id.tab_alarmlist_btn:
-                        mListener.onAlarmListClick(EZCameraListAdapter.this, v, position);
-                        break;
-                        
-                    case R.id.tab_setdevice_btn:
-                        mListener.onSetDeviceClick(EZCameraListAdapter.this, v, position);
-                        break;
-                        
-                    case R.id.camera_del_btn: 
-                        mListener.onDeleteClick(EZCameraListAdapter.this, v, position);
-                        break;
-                        
-                    case R.id.tab_devicepicture_btn: 
-                        mListener.onDevicePictureClick(EZCameraListAdapter.this, v, position);
-                        break;
-                        
-                    case R.id.tab_devicevideo_btn: 
-                        mListener.onDeviceVideoClick(EZCameraListAdapter.this, v, position);
-                        break;      
-                        
-                    case R.id.tab_devicedefence_btn: 
-                        mListener.onDeviceDefenceClick(EZCameraListAdapter.this, v, position);
-                        break;                          
                 }
             }
         }

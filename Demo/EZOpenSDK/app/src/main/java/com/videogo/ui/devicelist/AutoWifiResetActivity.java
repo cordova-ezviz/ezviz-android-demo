@@ -70,14 +70,11 @@ public class AutoWifiResetActivity extends RootActivity implements OnClickListen
     @Override
     public void onClick(View v) {
         Intent intent = null;
-        switch (v.getId()) {
-            case R.id.btnNext:
+        if (v.getId()== R.id.btnNext){
                 intent = new Intent(this, AutoWifiNetConfigActivity.class);
                 intent.putExtras(getIntent());
                 startActivity(intent);
-                break;
-            default:
-                break;
+
         }
     }
 }

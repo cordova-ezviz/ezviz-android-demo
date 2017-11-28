@@ -260,8 +260,8 @@ public class SeriesNumSearchActivity extends RootActivity implements OnClickList
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.searchBtn:
+        int viewId = view.getId();
+        if(viewId ==  R.id.searchBtn){
                 // 只有手动搜索点击的时候才会，清空验证码，二维码过来的不会清空
                 // 如果扫描的序列号与输入的序列号一样 那么不清除验证码
                 final String serialNo = mSeriesNumberEt.getText().toString().trim();
@@ -271,11 +271,9 @@ public class SeriesNumSearchActivity extends RootActivity implements OnClickList
                     mDeviceModel = null;
                 }
                 searchCameraBySN();
-                break;
-            case R.id.addBtn:
+        }else if(viewId == R.id.addBtn){
                 addQueryCamera();
-                break;
-            case R.id.btnNext:
+        }else if(viewId == R.id.btnNext){
                 Intent intent;
                 // demo代码这里只示范wifi配置
                 // 判断设备类型 （可以判断只能无线还是有线） 跳转相应的页面
@@ -297,11 +295,9 @@ public class SeriesNumSearchActivity extends RootActivity implements OnClickList
                     intent.putExtra(ChooseDeviceModeActivity.SUPPORT_NET_WORK, true);
                     startActivity(intent);
                 }*/
-                break;
-            case R.id.myRetry:
+        }else if(viewId == R.id.myRetry){
                 searchCameraBySN();
-                break;
-            case R.id.activateHint:
+        }else if(viewId == R.id.activateHint){
                 if (ConnectionDetector.getConnectionType(this) != ConnectionDetector.WIFI) {
                     // 配置wifi
                     showWifiRequiredDialog();
@@ -309,9 +305,7 @@ public class SeriesNumSearchActivity extends RootActivity implements OnClickList
 //                    ActivateActivity.launch(this, mSerialNoStr, mVerifyCode, mType, mDeviceType);
                     // finish();
                 }
-                break;
-            default:
-                break;
+
         }
     }
 

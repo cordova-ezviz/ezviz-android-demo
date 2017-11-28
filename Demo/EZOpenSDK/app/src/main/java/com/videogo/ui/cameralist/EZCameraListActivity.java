@@ -544,17 +544,13 @@ public class EZCameraListActivity extends Activity implements OnClickListener, S
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.camera_list_refresh_btn:
-            case R.id.no_camera_tip_ly:
+        int viewId = view.getId();
+            if( viewId ==  R.id.camera_list_refresh_btn || viewId == R.id.no_camera_tip_ly) {
                 refreshButtonClicked();
-                break;
-            case R.id.camera_list_gc_ly:
+            }else if(viewId == R.id.camera_list_gc_ly){
 //                Intent intent = new Intent(EZCameraListActivity.this, SquareColumnActivity.class);
 //                startActivity(intent);
-                break;
-            default:
-                break;
+
         }
     }
 
