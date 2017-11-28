@@ -688,7 +688,7 @@ public class PlayBackListActivity extends RootActivity implements QueryPlayBackL
             novideoImg.setVisibility(View.VISIBLE);
             loadingBar.setVisibility(View.GONE);
             mTabContentMainFrame.setVisibility(View.VISIBLE);
-        }else if (id == R.id.novideo_img_device) {:
+        }else if (id == R.id.novideo_img_device) {
     		mNoVideoImgLocal.setVisibility(View.VISIBLE);
     		mPinnedHeaderListViewForLocal.setVisibility(View.GONE);
     		loadingBar.setVisibility(View.GONE);
