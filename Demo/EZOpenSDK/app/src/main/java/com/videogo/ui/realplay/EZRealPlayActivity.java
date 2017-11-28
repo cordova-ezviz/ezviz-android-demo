@@ -1667,22 +1667,22 @@ public class EZRealPlayActivity extends Activity implements OnClickListener, Sur
             final int speed = EZConstants.PTZ_SPEED_DEFAULT;
             switch (action) {
                 case MotionEvent.ACTION_DOWN:
-                    if (R.id.talkback_control_btn == viewId) {
+                    if (R.id.talkback_control_btn == view.getId()) {
                         mTalkRingView.setVisibility(View.VISIBLE);
                         mEZPlayer.setVoiceTalkStatus(true);
-                    } else if (R.id.ptz_top_btn == viewId) {
+                    } else if (R.id.ptz_top_btn == view.getId()) {
                         mPtzControlLy.setBackgroundResource(R.drawable.ptz_up_sel);
                         setPtzDirectionIv(RealPlayStatus.PTZ_UP);
                         ptzOption(EZPTZCommand.EZPTZCommandUp, EZPTZAction.EZPTZActionSTART);
-                    } else if (R.id.ptz_bottom_btn == viewId) {
+                    } else if (R.id.ptz_bottom_btn == view.getId()) {
                         mPtzControlLy.setBackgroundResource(R.drawable.ptz_bottom_sel);
                         setPtzDirectionIv(RealPlayStatus.PTZ_DOWN);
                         ptzOption(EZPTZCommand.EZPTZCommandDown, EZPTZAction.EZPTZActionSTART);
-                    } else if (R.id.ptz_left_btn == viewId) {
+                    } else if (R.id.ptz_left_btn == view.getId()) {
                         mPtzControlLy.setBackgroundResource(R.drawable.ptz_left_sel);
                         setPtzDirectionIv(RealPlayStatus.PTZ_LEFT);
                         ptzOption(EZPTZCommand.EZPTZCommandLeft, EZPTZAction.EZPTZActionSTART);
-                    } else if (R.id.ptz_right_btn == viewId) {
+                    } else if (R.id.ptz_right_btn == view.getId()) {
                         mPtzControlLy.setBackgroundResource(R.drawable.ptz_right_sel);
                         setPtzDirectionIv(RealPlayStatus.PTZ_RIGHT);
                         ptzOption(EZPTZCommand.EZPTZCommandRight, EZPTZAction.EZPTZActionSTART);
@@ -1690,19 +1690,19 @@ public class EZRealPlayActivity extends Activity implements OnClickListener, Sur
                     }
                     break;
                 case MotionEvent.ACTION_UP:
-                    if (R.id.talkback_control_btn == viewId) {
+                    if (R.id.talkback_control_btn == view.getId()) {
                         mEZPlayer.setVoiceTalkStatus(false);
                         mTalkRingView.setVisibility(View.GONE);
-                    } else if (R.id.ptz_top_btn == viewId) {
+                    } else if (R.id.ptz_top_btn == view.getId()) {
                         mPtzControlLy.setBackgroundResource(R.drawable.ptz_bg);
                         ptzOption(EZPTZCommand.EZPTZCommandUp, EZPTZAction.EZPTZActionSTOP);
-                    } else if (R.id.ptz_bottom_btn == viewId) {
+                    } else if (R.id.ptz_bottom_btn == view.getId()) {
                         mPtzControlLy.setBackgroundResource(R.drawable.ptz_bg);
                         ptzOption(EZPTZCommand.EZPTZCommandDown, EZPTZAction.EZPTZActionSTOP);
-                    } else if (R.id.ptz_left_btn == viewId) {
+                    } else if (R.id.ptz_left_btn == view.getId()) {
                         mPtzControlLy.setBackgroundResource(R.drawable.ptz_bg);
                         ptzOption(EZPTZCommand.EZPTZCommandLeft, EZPTZAction.EZPTZActionSTOP);
-                    } else if (R.id.ptz_right_btn == viewId) {
+                    } else if (R.id.ptz_right_btn == view.getId()) {
                         mPtzControlLy.setBackgroundResource(R.drawable.ptz_bg);
                         ptzOption(EZPTZCommand.EZPTZCommandRight, EZPTZAction.EZPTZActionSTOP);
 

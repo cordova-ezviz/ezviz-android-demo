@@ -62,7 +62,7 @@ public class LoginSelectActivity extends Activity implements OnClickListener{
     public void onClick(View v) {
         Intent intent = null;
         if (v.getId() == R.id.interface_call_btn) {
-            f (TextUtils.isEmpty(EzvizApplication.AppKey)){
+            if (TextUtils.isEmpty(EzvizApplication.AppKey)){
                     Toast.makeText(this,"Appkey为空",Toast.LENGTH_LONG).show();
                     return;
                 }

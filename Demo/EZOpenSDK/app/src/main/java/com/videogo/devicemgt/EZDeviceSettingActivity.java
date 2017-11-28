@@ -262,7 +262,7 @@ public class EZDeviceSettingActivity extends RootActivity {
                         startActivityForResult(intent, REQUEST_CODE_MODIFY_DEVICE_NAME);
                     } else if (v.getId() == R.id.ez_device_serial_layout) {
                         try {
-                            if (getOpenSDK().getClass().isInstance(EZOpenSDK.class)) {
+                            if (EzvizApplication.getOpenSDK().getClass().isInstance(EZOpenSDK.class)) {
                                 EZOpenSDK.getInstance().openCloudPage(mEZDeviceInfo.getDeviceSerial());
                             }
                         } catch (BaseException e) {
