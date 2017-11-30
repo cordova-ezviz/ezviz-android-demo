@@ -61,7 +61,7 @@ import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.videogo.EzvizApplication;
+
 import com.videogo.RootActivity;
 import com.videogo.constant.Constant;
 import com.videogo.constant.IntentConsts;
@@ -1050,7 +1050,7 @@ public class PlayBackListActivity extends RootActivity implements QueryPlayBackL
         	// 停止播放
             mPlayer.stopPlayback();
         } else {
-        	mPlayer = EzvizApplication.getOpenSDK().createPlayer(mCameraInfo.getDeviceSerial(),mCameraInfo.getCameraNo());
+        	mPlayer = getOpenSDK().createPlayer(mCameraInfo.getDeviceSerial(),mCameraInfo.getCameraNo());
             mPlayer.setPlayVerifyCode(DataManager.getInstance().getDeviceSerialVerifyCode(mCameraInfo.getDeviceSerial()));
         }
     }
@@ -1333,7 +1333,7 @@ public class PlayBackListActivity extends RootActivity implements QueryPlayBackL
         closePlayBack();
 
         if (mPlayer != null) {
-            EzvizApplication.getOpenSDK().releasePlayer(mPlayer);
+            getOpenSDK().releasePlayer(mPlayer);
         }
 
         stopQueryTask();

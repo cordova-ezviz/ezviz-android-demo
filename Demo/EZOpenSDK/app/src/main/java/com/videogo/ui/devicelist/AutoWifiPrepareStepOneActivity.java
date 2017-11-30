@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.videogo.ExitActivity;
 import com.videogo.RootActivity;
 import com.videogo.widget.BoldSpan;
 import com.videogo.widget.TitleBar;
@@ -58,6 +59,8 @@ public class AutoWifiPrepareStepOneActivity extends RootActivity implements OnCl
         setContentView(R.layout.auto_wifi_prepare_step_on);
         initTitleBar();
         initUI();
+
+        ExitActivity.getInstance().addActivity(this);
     }
 
     /**

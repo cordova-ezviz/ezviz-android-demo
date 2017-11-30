@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.TextView;
 
+import com.videogo.ExitActivity;
 import com.videogo.RootActivity;
 import com.videogo.widget.TitleBar;
 
@@ -32,6 +33,8 @@ public class AutoWifiResetActivity extends RootActivity implements OnClickListen
         setContentView(R.layout.auto_wifi_reset);
         initTitleBar();
         initUI();
+
+        ExitActivity.getInstance().addActivity(this);
     }
 
     /**

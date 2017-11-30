@@ -1,5 +1,9 @@
 package com.videogo;
 
+import java.util.LinkedList;
+import java.util.List;
+
+import android.app.Application;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
@@ -14,6 +18,7 @@ import com.videogo.util.LocalInfo;
 import com.videogo.util.LogUtil;
 import com.videogo.util.Utils;
 import com.videogo.widget.WaitDialog;
+import com.videogo.openapi.EZOpenSDK;
 
 public class RootActivity extends Activity {
     // private static boolean isResumed = false;
@@ -28,6 +33,68 @@ public class RootActivity extends Activity {
     public static boolean isOnRusumed = false;
     /** 等待框 */
     private WaitDialog mWaitDlg;
+    public static String AppKey = "ec8223fe65fc42be8e142ecf0c721139";
+    //运用list来保存们每一个activity是关键
+    private List<Activity> mList = new LinkedList<Activity>();
+
+    public static EZOpenSDK getOpenSDK() {
+        return EZOpenSDK.getInstance();
+    }
+    public void initSDK(Application application,String AppKey) {
+        {
+            /**
+             * sdk日志开关，正式发布需要去掉
+             */
+            EZOpenSDK.showSDKLog(true);
+
+            /**
+             * 设置是否支持P2P取流,详见api
+             */
+            EZOpenSDK.enableP2P(true);
+
+            /**
+             * APP_KEY请替换成自己申请的
+             */
+            EZOpenSDK.initLib(application, AppKey, "");
+        }
+    }
+
+    //为了实现每次使用该类时不创建新的对象而创建的静态对象
+//    private static RootActivity instance;
+//    //构造方法
+//    private RootActivity(){}
+//    //实例化一次
+//    public synchronized static RootActivity getInstance(){
+//        if (null == instance) {
+//            instance = new RootActivity();
+//        }
+//        return instance;
+//    }
+
+    // add Activity
+//    public void addActivity(Activity activity) {
+//        mList.add(activity);
+//    }
+//    //关闭每一个list内的activity
+//    public void activityExit() {
+//        try {
+//            for (Activity activity:mList) {
+//                if (activity != null)
+//                    activity.finish();
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        } finally {
+////            System.exit(0);
+//        }
+//    }
+//    //杀进程
+//    public void onLowMemory() {
+//        super.onLowMemory();
+//        System.gc();
+//    }
+
+
 
     protected void showToast(int id) {
         if (!mIsTip) {

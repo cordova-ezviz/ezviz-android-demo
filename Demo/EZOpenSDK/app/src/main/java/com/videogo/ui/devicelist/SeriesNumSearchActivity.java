@@ -24,7 +24,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.videogo.EzvizApplication;
+
+import com.videogo.ExitActivity;
 import com.videogo.RootActivity;
 import com.videogo.constant.Constant;
 import com.videogo.constant.IntentConsts;
@@ -149,6 +150,8 @@ public class SeriesNumSearchActivity extends RootActivity implements OnClickList
         initUI();
         setListener();
         getData();
+
+        ExitActivity.getInstance().addActivity(this);
     }
 
     /**
@@ -404,7 +407,7 @@ public class SeriesNumSearchActivity extends RootActivity implements OnClickList
         new Thread() {
             public void run() {
                 try {
-                    mEZProbeDeviceInfo = EzvizApplication.getOpenSDK().probeDeviceInfo(serialNo);
+                    mEZProbeDeviceInfo = getOpenSDK().probeDeviceInfo(serialNo);
                     sendMessage(MSG_QUERY_CAMERA_SUCCESS);
                     LogUtil.infoLog(TAG, "getCameraInfo success");
                 }
@@ -860,7 +863,7 @@ public class SeriesNumSearchActivity extends RootActivity implements OnClickList
             public void run() {
 
                 try {
-                    boolean result = EzvizApplication.getOpenSDK().addDevice(mSerialNoStr, mVerifyCode);
+                    boolean result = getOpenSDK().addDevice(mSerialNoStr, mVerifyCode);
 
                     /***********如有需要开发者需要自己保存此验证码***********/
 //                    if (!TextUtils.isEmpty(mVerifyCode)) {

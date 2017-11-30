@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.hikvision.wifi.configuration.BaseUtil;
+import com.videogo.ExitActivity;
 import com.videogo.RootActivity;
 import com.videogo.util.ConnectionDetector;
 import com.videogo.widget.TitleBar;
@@ -67,6 +68,8 @@ public class AutoWifiNetConfigActivity extends RootActivity implements OnClickLi
         findViews();
         initUI();
         setListener();
+
+        ExitActivity.getInstance().addActivity(this);
     }
 
     /**

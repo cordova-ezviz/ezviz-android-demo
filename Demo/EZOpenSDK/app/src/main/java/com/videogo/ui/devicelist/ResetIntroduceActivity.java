@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.TextView;
 
+import com.videogo.ExitActivity;
 import com.videogo.constant.IntentConsts;
 import com.videogo.device.DeviceInfoEx;
 import com.videogo.device.DeviceManager;
@@ -39,6 +40,8 @@ public class ResetIntroduceActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.auto_wifi_reset_introduce);
+
+        ExitActivity.getInstance().addActivity(this);
 
         btnBack = findViewById(R.id.btnBack);
         tvTitle = (TextView) findViewById(R.id.tvTitle);

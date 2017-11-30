@@ -16,7 +16,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.videogo.EzvizApplication;
 import com.videogo.RootActivity;
 import com.videogo.constant.IntentConsts;
 import com.videogo.errorlayer.ErrorInfo;
@@ -262,7 +261,7 @@ public class EZDeviceSettingActivity extends RootActivity {
                         startActivityForResult(intent, REQUEST_CODE_MODIFY_DEVICE_NAME);
                     } else if (v.getId() == R.id.ez_device_serial_layout) {
                         try {
-                            if (EzvizApplication.getOpenSDK().getClass().isInstance(EZOpenSDK.class)) {
+                            if (getOpenSDK().getClass().isInstance(EZOpenSDK.class)) {
                                 EZOpenSDK.getInstance().openCloudPage(mEZDeviceInfo.getDeviceSerial());
                             }
                         } catch (BaseException e) {
@@ -653,7 +652,7 @@ public class EZDeviceSettingActivity extends RootActivity {
         @Override
         protected Boolean doInBackground(Void... params) {
         	try {
-        		mDeviceVersion = EzvizApplication.getOpenSDK().getDeviceVersion(mEZDeviceInfo.getDeviceSerial());
+        		mDeviceVersion = getOpenSDK().getDeviceVersion(mEZDeviceInfo.getDeviceSerial());
         		return true;
         	} catch (BaseException e) {;
                 ErrorInfo errorInfo = (ErrorInfo) e.getObject();
@@ -744,7 +743,7 @@ public class EZDeviceSettingActivity extends RootActivity {
 			bSetDefence = (Boolean) params[0];
 			Boolean result = false;
 			try {
-				result = EzvizApplication.getOpenSDK().setDefence(mEZDeviceInfo.getDeviceSerial(), bSetDefence?EZConstants.EZDefenceStatus.EZDefence_IPC_OPEN:
+				result = getOpenSDK().setDefence(mEZDeviceInfo.getDeviceSerial(), bSetDefence?EZConstants.EZDefenceStatus.EZDefence_IPC_OPEN:
                         EZConstants.EZDefenceStatus.EZDefence_IPC_CLOSE);
 			} catch (BaseException e) {
                 ErrorInfo errorInfo = (ErrorInfo) e.getObject();
@@ -804,7 +803,7 @@ public class EZDeviceSettingActivity extends RootActivity {
         	boolean isEnableEncrypt = params[0];
             bAction = isEnableEncrypt;
             try {
-            	EzvizApplication.getOpenSDK().setDeviceEncryptStatus(mEZDeviceInfo.getDeviceSerial(),mValidateCode,isEnableEncrypt);
+            	getOpenSDK().setDeviceEncryptStatus(mEZDeviceInfo.getDeviceSerial(),mValidateCode,isEnableEncrypt);
 
                 return true;
             } catch (BaseException e) {
@@ -868,7 +867,7 @@ public class EZDeviceSettingActivity extends RootActivity {
         @Override
         protected Boolean doInBackground(Boolean... params) {
             try {
-                EzvizApplication.getOpenSDK().controlVideoFlip(mEZDeviceInfo.getDeviceSerial(),mEZCameraInfo.getCameraNo(), EZConstants.EZPTZDisplayCommand.EZPTZDisplayCommandFlip);
+                getOpenSDK().controlVideoFlip(mEZDeviceInfo.getDeviceSerial(),mEZCameraInfo.getCameraNo(), EZConstants.EZPTZDisplayCommand.EZPTZDisplayCommandFlip);
             } catch (BaseException e) {
                 mErrorCode = e.getObject().hashCode();
 
@@ -928,7 +927,7 @@ public class EZDeviceSettingActivity extends RootActivity {
 
             try {
 //            	EZCameraInfo cameraInfo = params[0];
-                EzvizApplication.getOpenSDK().deleteDevice(mEZDeviceInfo.getDeviceSerial());
+                getOpenSDK().deleteDevice(mEZDeviceInfo.getDeviceSerial());
                 return true;
             } catch (BaseException e) {
                 ErrorInfo errorInfo = (ErrorInfo) e.getObject();

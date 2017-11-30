@@ -27,7 +27,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 
-import com.videogo.EzvizApplication;
+
 import com.videogo.RootActivity;
 import com.videogo.errorlayer.ErrorInfo;
 import com.videogo.exception.BaseException;
@@ -58,7 +58,7 @@ import java.util.Map;
 
 import ezviz.ezopensdk.R;
 
-public class InterfaceSelfTestActivity extends Activity implements View.OnClickListener
+public class InterfaceSelfTestActivity extends RootActivity implements View.OnClickListener
     , EZLeaveMsgController.EZLeaveMsgGetDataCb {
     public static final String TAG = "InterfaceTestActivity";
     private static final int MSG_PLAY_NEXT = 101;
@@ -160,14 +160,14 @@ public class InterfaceSelfTestActivity extends Activity implements View.OnClickL
 
     private void invoke_getDeviceList() {
                 try {
-                    EzvizApplication.getOpenSDK().getDeviceList(0, 5);
+                    getOpenSDK().getDeviceList(0, 5);
                 } catch (BaseException e) {
                     e.printStackTrace();
                 }
     }
     private void invoke_setDeviceDefence(){
         try {
-            EzvizApplication.getOpenSDK().setDefence("097226598", EZConstants.EZDefenceStatus.EZDefence_ALARMHOST_OUTER);
+            getOpenSDK().setDefence("097226598", EZConstants.EZDefenceStatus.EZDefence_ALARMHOST_OUTER);
         } catch (BaseException e) {
             e.printStackTrace();
         }
@@ -176,7 +176,7 @@ public class InterfaceSelfTestActivity extends Activity implements View.OnClickL
     private void invoke_capturePicture(String deviceSerial) {
         // test interface capturePicture
         try {
-            String picUrl = EzvizApplication.getOpenSDK().captureCamera(deviceSerial, 0);
+            String picUrl = getOpenSDK().captureCamera(deviceSerial, 0);
             LogUtil.i(TAG, "testV32Interface: capturePicture: " + picUrl);
         } catch (BaseException e) {
             e.printStackTrace();
@@ -186,7 +186,7 @@ public class InterfaceSelfTestActivity extends Activity implements View.OnClickL
     private void invoke_getUserInfo() {
         // test interface getUserInfo
         try {
-            EZUserInfo userInfo = EzvizApplication.getOpenSDK().getUserInfo();
+            EZUserInfo userInfo = getOpenSDK().getUserInfo();
             LogUtil.i(TAG, "EZUserInfo:" + userInfo);
         } catch (BaseException e) {
             e.printStackTrace();
@@ -199,7 +199,7 @@ public class InterfaceSelfTestActivity extends Activity implements View.OnClickL
     private void invoke_getUnreadMessageCount (String deviceSerial) {
         // test interface getUnreadMessageCount
         try {
-            int msgCount = EzvizApplication.getOpenSDK().getUnreadMessageCount(deviceSerial, EZConstants.EZMessageType.EZMessageTypeAlarm);
+            int msgCount = getOpenSDK().getUnreadMessageCount(deviceSerial, EZConstants.EZMessageType.EZMessageTypeAlarm);
             LogUtil.i(TAG, "unReadMessageCount:" + msgCount);
         } catch (BaseException e) {
             e.printStackTrace();
@@ -220,7 +220,7 @@ public class InterfaceSelfTestActivity extends Activity implements View.OnClickL
             end.set(end.get(Calendar.YEAR), end.get(Calendar.MONTH), end.get(Calendar.DAY_OF_MONTH),
                     23, 59, 59);
 
-            result = EzvizApplication.getOpenSDK().getAlarmList(deviceSerial, 0, 5, begin, end);
+            result = getOpenSDK().getAlarmList(deviceSerial, 0, 5, begin, end);
             LogUtil.i(TAG, "invoke_getAlarmListBySerial: " + result);
         } catch (BaseException e) {
             e.printStackTrace();
@@ -238,7 +238,7 @@ public class InterfaceSelfTestActivity extends Activity implements View.OnClickL
             end.set(end.get(Calendar.YEAR), end.get(Calendar.MONTH), end.get(Calendar.DAY_OF_MONTH),
                     23, 59, 59);
 
-            result = EzvizApplication.getOpenSDK().getAlarmList(null, 0, 5, begin, end);
+            result = getOpenSDK().getAlarmList(null, 0, 5, begin, end);
             LogUtil.i(TAG, "invoke_getAlarmListBySerial: " + result);
         } catch (BaseException e) {
             e.printStackTrace();
@@ -256,7 +256,7 @@ public class InterfaceSelfTestActivity extends Activity implements View.OnClickL
             end.set(end.get(Calendar.YEAR), end.get(Calendar.MONTH), end.get(Calendar.DAY_OF_MONTH),
                     23, 59, 59);
 
-            result = EzvizApplication.getOpenSDK().getAlarmList(null, 0, 5, null, end);
+            result = getOpenSDK().getAlarmList(null, 0, 5, null, end);
             LogUtil.i(TAG, "invoke_getAlarmListBySerial: " + result);
         } catch (BaseException e) {
 //            e.printStackTrace();
@@ -271,7 +271,7 @@ public class InterfaceSelfTestActivity extends Activity implements View.OnClickL
             end.set(end.get(Calendar.YEAR), end.get(Calendar.MONTH), end.get(Calendar.DAY_OF_MONTH),
                     23, 59, 59);
 
-            result = EzvizApplication.getOpenSDK().getAlarmList(null, 0, 5, begin, null);
+            result = getOpenSDK().getAlarmList(null, 0, 5, begin, null);
             LogUtil.i(TAG, "invoke_getAlarmListBySerial: " + result);
             Assert(true);
         } catch (BaseException e) {
@@ -287,7 +287,7 @@ public class InterfaceSelfTestActivity extends Activity implements View.OnClickL
             end.set(end.get(Calendar.YEAR), end.get(Calendar.MONTH), end.get(Calendar.DAY_OF_MONTH),
                     23, 59, 59);
 
-            result = EzvizApplication.getOpenSDK().getAlarmList(null, 0, 5, null, null);
+            result = getOpenSDK().getAlarmList(null, 0, 5, null, null);
             LogUtil.i(TAG, "invoke_getAlarmListBySerial: " + result);
             Assert(true, "begin and end time are null");
         } catch (BaseException e) {
@@ -304,7 +304,7 @@ public class InterfaceSelfTestActivity extends Activity implements View.OnClickL
             end.set(end.get(Calendar.YEAR), end.get(Calendar.MONTH), end.get(Calendar.DAY_OF_MONTH),
                     23, 59, 59);
 
-            result = EzvizApplication.getOpenSDK().getAlarmList("12345678a", 0, 5, begin, end);
+            result = getOpenSDK().getAlarmList("12345678a", 0, 5, begin, end);
             LogUtil.i(TAG, "invoke_getAlarmListBySerial: " + result);
             Assert(false, "");
         } catch (BaseException e) {
@@ -372,7 +372,7 @@ public class InterfaceSelfTestActivity extends Activity implements View.OnClickL
 
         // test interface probeDeviceInfo
         try {
-            EZProbeDeviceInfo probeInfo = EzvizApplication.getOpenSDK().probeDeviceInfo(deviceSerial);
+            EZProbeDeviceInfo probeInfo = getOpenSDK().probeDeviceInfo(deviceSerial);
             LogUtil.i(TAG, "probeDeviceInfo:" + probeInfo);
         } catch (BaseException e) {
             e.printStackTrace();
@@ -383,7 +383,7 @@ public class InterfaceSelfTestActivity extends Activity implements View.OnClickL
 
         // test interface formatStorage
         try {
-            boolean formatResult = EzvizApplication.getOpenSDK().formatStorage(deviceSerial, 1);
+            boolean formatResult = getOpenSDK().formatStorage(deviceSerial, 1);
             LogUtil.i(TAG, "formatStorage:" + formatResult);
         } catch (BaseException e) {
             ErrorInfo errorInfo = (ErrorInfo) e.getObject();
@@ -392,7 +392,7 @@ public class InterfaceSelfTestActivity extends Activity implements View.OnClickL
 
         // test interface getStorageStatus
         try {
-            List<EZStorageStatus> storageList = EzvizApplication.getOpenSDK().getStorageStatus(deviceSerial);
+            List<EZStorageStatus> storageList = getOpenSDK().getStorageStatus(deviceSerial);
             LogUtil.i(TAG, "getStorageStatus:" + storageList);
         } catch (BaseException e) {
             e.printStackTrace();
@@ -403,7 +403,7 @@ public class InterfaceSelfTestActivity extends Activity implements View.OnClickL
 
         // test interface getDeviceUpgradeStatus
         try {
-            EZDeviceUpgradeStatus status = EzvizApplication.getOpenSDK().getDeviceUpgradeStatus(deviceSerial);
+            EZDeviceUpgradeStatus status = getOpenSDK().getDeviceUpgradeStatus(deviceSerial);
             LogUtil.i(TAG, "run: getDeviceUpgradeStatus" + status);
         } catch (BaseException e) {
             e.printStackTrace();
@@ -414,7 +414,7 @@ public class InterfaceSelfTestActivity extends Activity implements View.OnClickL
 
         // test interface upgradeDevice
         try {
-            EzvizApplication.getOpenSDK().upgradeDevice(deviceSerial);
+            getOpenSDK().upgradeDevice(deviceSerial);
         } catch (BaseException e) {
             e.printStackTrace();
 
@@ -466,7 +466,7 @@ public class InterfaceSelfTestActivity extends Activity implements View.OnClickL
                 byte pureContent[] = Arrays.copyOf(data, len);
 
                 // 2, 调用decryptData得到解密后的bitmap数据, NXXJOO为密码(默认是设备验证码)
-                byte[] decryptData = EzvizApplication.getOpenSDK().decryptData(pureContent, "NXXJOO");
+                byte[] decryptData = getOpenSDK().decryptData(pureContent, "NXXJOO");
                 LogUtil.i(TAG, "test_decryptData: decrypt finish");
                 
                 // 3, 将解密后的数据写到文件中，看是否解密成功

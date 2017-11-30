@@ -55,6 +55,7 @@ import android.widget.RelativeLayout.LayoutParams;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.videogo.RootActivity;
 import com.videogo.constant.Config;
 import com.videogo.constant.Constant;
 import com.videogo.constant.IntentConsts;
@@ -97,8 +98,7 @@ import com.videogo.widget.RingView;
 import com.videogo.widget.TitleBar;
 import com.videogo.widget.WaitDialog;
 import com.videogo.widget.loading.LoadingTextView;
-import com.videogo.EzvizApplication;
-import static com.videogo.EzvizApplication.getOpenSDK;
+
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -121,7 +121,7 @@ import ezviz.ezopensdk.R;
  * @author xiaxingsuo
  * @data 2015-11-11
  */
-public class EZRealPlayActivity extends Activity implements OnClickListener, SurfaceHolder.Callback,
+public class EZRealPlayActivity extends RootActivity implements OnClickListener, SurfaceHolder.Callback,
         Handler.Callback, OnTouchListener, VerifyCodeInput.VerifyCodeInputListener {
     private static final String TAG = "RealPlayerActivity";
     /**
@@ -1648,7 +1648,7 @@ public class EZRealPlayActivity extends Activity implements OnClickListener, Sur
             public void run() {
                 boolean ptz_result = false;
                 try {
-                    ptz_result = EzvizApplication.getOpenSDK().controlPTZ(mCameraInfo.getDeviceSerial(), mCameraInfo.getCameraNo(), command,
+                    ptz_result = getOpenSDK().controlPTZ(mCameraInfo.getDeviceSerial(), mCameraInfo.getCameraNo(), command,
                             action, EZConstants.PTZ_SPEED_DEFAULT);
                 } catch (BaseException e) {
                     e.printStackTrace();
@@ -1741,7 +1741,7 @@ public class EZRealPlayActivity extends Activity implements OnClickListener, Sur
                 public void run() {
                     try {
                         // need to modify by yudan at 08-11
-                        EzvizApplication.getOpenSDK().setVideoLevel(mCameraInfo.getDeviceSerial(), mCameraInfo.getCameraNo(), mode.getVideoLevel());
+                        getOpenSDK().setVideoLevel(mCameraInfo.getDeviceSerial(), mCameraInfo.getCameraNo(), mode.getVideoLevel());
                         mCurrentQulityMode = mode;
                         Message msg = Message.obtain();
                         msg.what = MSG_SET_VEDIOMODE_SUCCESS;
@@ -2209,7 +2209,7 @@ public class EZRealPlayActivity extends Activity implements OnClickListener, Sur
 
         if (mCameraInfo != null) {
             if (mEZPlayer == null) {
-                mEZPlayer = EzvizApplication.getOpenSDK().createPlayer(mCameraInfo.getDeviceSerial(), mCameraInfo.getCameraNo());
+                mEZPlayer = getOpenSDK().createPlayer(mCameraInfo.getDeviceSerial(), mCameraInfo.getCameraNo());
             }
 
             if (mEZPlayer == null)
@@ -2225,7 +2225,7 @@ public class EZRealPlayActivity extends Activity implements OnClickListener, Sur
             mEZPlayer.setSurfaceHold(mRealPlaySh);
             mEZPlayer.startRealPlay();
         } else if (mRtspUrl != null) {
-            mEZPlayer = EzvizApplication.getOpenSDK().createPlayerWithUrl(mRtspUrl);
+            mEZPlayer = getOpenSDK().createPlayerWithUrl(mRtspUrl);
             //mStub.setCameraId(mCameraInfo.getCameraId());////****  mj
             if (mEZPlayer == null)
                 return;

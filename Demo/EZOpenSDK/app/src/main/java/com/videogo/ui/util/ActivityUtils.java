@@ -17,7 +17,7 @@ package com.videogo.ui.util;
 
 import android.app.Activity;
 
-import com.videogo.EzvizApplication;
+
 import com.videogo.exception.BaseException;
 import com.videogo.openapi.EZGlobalSDK;
 import com.videogo.openapi.EZOpenSDK;
@@ -52,7 +52,7 @@ public class ActivityUtils {
     }
 
     public static void goToLoginAgain(Activity activity) {
-        if (EZGlobalSDK.class.isInstance(EzvizApplication.getOpenSDK())) {
+        if (EZGlobalSDK.class.isInstance(EZOpenSDK.getInstance())) {
             new Thread(new Runnable() {
                 @Override
                 public void run() {

@@ -8,7 +8,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.videogo.EzvizApplication;
+import com.videogo.RootActivity;
 import com.videogo.errorlayer.ErrorInfo;
 import com.videogo.exception.BaseException;
 import com.videogo.openapi.bean.EZDeviceUpgradeStatus;
@@ -21,7 +21,7 @@ import java.util.TimerTask;
 
 import ezviz.ezopensdk.R;
 
-public class EZUpgradeDeviceActivity extends Activity {
+public class EZUpgradeDeviceActivity extends RootActivity {
     private final static String TAG = "EZUpgradeDeviceActivity";
     private final static int TIMER_PERIODS = 3*1000;
     private TitleBar mTitleBar;
@@ -159,7 +159,7 @@ public class EZUpgradeDeviceActivity extends Activity {
             @Override
             public void run() {
                 try {
-                    mUpgradeStatus = EzvizApplication.getOpenSDK().getDeviceUpgradeStatus(mDeviceSerial);
+                    mUpgradeStatus = getOpenSDK().getDeviceUpgradeStatus(mDeviceSerial);
                     mStatus = mUpgradeStatus.getUpgradeStatus();
                     LogUtil.i(TAG, "checkUpgradeStatusPeriodical: status: " + mStatus);
                 } catch (BaseException e) {
@@ -186,7 +186,7 @@ public class EZUpgradeDeviceActivity extends Activity {
             @Override
             public void run() {
                 try {
-                    EzvizApplication.getOpenSDK().upgradeDevice(mDeviceSerial);
+                    getOpenSDK().upgradeDevice(mDeviceSerial);
                     mTimer = new Timer();
                     mTimer.schedule(new TimerTask() {
                         @Override
@@ -211,7 +211,7 @@ public class EZUpgradeDeviceActivity extends Activity {
             @Override
             public void run() {
                 try {
-                    mVersion = EzvizApplication.getOpenSDK().getDeviceVersion(mDeviceSerial);
+                    mVersion = getOpenSDK().getDeviceVersion(mDeviceSerial);
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {

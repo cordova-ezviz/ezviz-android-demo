@@ -1,5 +1,6 @@
 package com.videogo.ui.devicelist;
 
+import android.app.ActivityManager;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -30,9 +31,11 @@ import android.widget.TextView;
 import android.support.v4.content.LocalBroadcastManager;
 
 import com.hikvision.wifi.configuration.DeviceInfo;
-import com.videogo.EzvizApplication;
+
+import com.videogo.ExitActivity;
 import com.videogo.RootActivity;
 import com.videogo.constant.Constant;
+import com.videogo.constant.IntentConsts;
 import com.videogo.device.DeviceInfoEx;
 import com.videogo.device.SearchDeviceInfo;
 import com.videogo.errorlayer.ErrorInfo;
@@ -57,7 +60,6 @@ import java.util.TimerTask;
 
 import ezviz.ezopensdk.R;
 
-import static com.videogo.EzvizApplication.getOpenSDK;
 
 /**
  * 一键添加摄像头界面
@@ -357,7 +359,7 @@ public class AutoWifiConnectingActivity extends RootActivity implements OnClickL
     // return other value means fail, result is the error code
     private int probeDeviceInfo(String deviceSerial) {
         try {
-            mEZProbeDeviceInfo = EzvizApplication.getOpenSDK().probeDeviceInfo(serialNo);
+            mEZProbeDeviceInfo = EZOpenSDK.getInstance().probeDeviceInfo(serialNo);
             if (mEZProbeDeviceInfo != null) {
                 return 0;
             }
@@ -705,8 +707,8 @@ public class AutoWifiConnectingActivity extends RootActivity implements OnClickL
                 thr.start();
             }
         });
-        EzvizApplication.getOpenSDK().stopConfigWiFi();
-        EzvizApplication.getOpenSDK().startConfigWifi(AutoWifiConnectingActivity.this, serialNo, wifiSSID, wifiPassword, mEZStartConfigWifiCallback);
+        EZOpenSDK.getInstance().stopConfigWiFi();
+        EZOpenSDK.getInstance().startConfigWifi(AutoWifiConnectingActivity.this, serialNo, wifiSSID, wifiPassword, mEZStartConfigWifiCallback);
     }
 
     /**
@@ -722,7 +724,7 @@ public class AutoWifiConnectingActivity extends RootActivity implements OnClickL
             @Override
             public void run() {
                 long startTime = System.currentTimeMillis();
-                EzvizApplication.getOpenSDK().stopConfigWiFi();
+                EZOpenSDK.getInstance().stopConfigWiFi();
                 LogUtil.debugLog(TAG, "stopBonjourOnThread .cost time = "
                         + (System.currentTimeMillis() - startTime) + "ms");
             }
@@ -801,7 +803,7 @@ public class AutoWifiConnectingActivity extends RootActivity implements OnClickL
         @Override
         protected EZDeviceInfo doInBackground(Void... params) {
             try {
-                EZDeviceInfo deviceInfo = getOpenSDK().getDeviceInfo(serialNo);
+                EZDeviceInfo deviceInfo = EZOpenSDK.getInstance().getDeviceInfo(serialNo);
                 EZCameraInfo cameraInfo = EZUtils.getCameraInfoFromDevice(deviceInfo, 0);
 
                 int videoLevel = cameraInfo.getVideoLevel().getVideoLevel();
@@ -815,23 +817,27 @@ public class AutoWifiConnectingActivity extends RootActivity implements OnClickL
                 String deviceName = deviceInfo.getDeviceName();
                 String deviceSerial = deviceInfo.getDeviceSerial();
 
-                final Intent intent2 = new Intent("completionButtonClicked");
+                final Intent intent2 = new Intent("completeDevice");
 
-                String result = "{deviceSerial:" + deviceSerial + ","
-                        + "deviceName:" + deviceName + ","
-                        + "cameraName:" + cameraName + ","
-                        + "picUrl:" + picUrl + ","
-                        + "cameraNo:" + cameraNo + ","
-                        + "status:" + status + ","
-                        + "isShared:" + isShared + ","
-                        + "isEncrypt:" + isEncrypt + ","
-                        + "defence:" + defence + ","
-                        + "videoLevel:" + videoLevel + "}";
+                String result = "{ \"deviceSerial\": \"" + deviceSerial
+                        + "\",\"deviceName\":\"" + deviceName
+                        + "\",\"cameraName\":\"" + cameraName
+                        + "\",\"picUrl\":\"" + picUrl
+                        + "\",\"cameraNo\":\"" + cameraNo
+                        + "\",\"status\":\"" + status
+                        + "\",\"isShared\":\"" + isShared
+                        + "\",\"isEncrypt\":\"" + isEncrypt
+                        + "\",\"defence\":\"" + defence
+                        + "\",\"videoLevel\":\"" + videoLevel + "\"}";
                 Bundle b = new Bundle();
-                b.putString("data", result);
+                b.putString( "userdata", "{ \"data\": "+result+"}" );
                 intent2.putExtras(b);
 
                 LocalBroadcastManager.getInstance(context).sendBroadcastSync(intent2);
+
+                ExitActivity.getInstance().activityExit();
+                finish();
+
                 return null;
             } catch (BaseException e) {
                 e.printStackTrace();
@@ -1019,7 +1025,7 @@ public class AutoWifiConnectingActivity extends RootActivity implements OnClickL
                 LogUtil.i(TAG, "in STATUS_REGISTING: startOvertimeTimer");
                 startOvertimeTimer((MAX_TIME_STEP_TWO_REGIST - 5) * 1000, new Runnable() {
                     public void run() {
-                        EzvizApplication.getOpenSDK().stopConfigWiFi();
+                        EZOpenSDK.getInstance().stopConfigWiFi();
                         final Runnable success = new Runnable() {
                             public void run() {
                                 if (isPlatConnected) {
@@ -1341,7 +1347,7 @@ public class AutoWifiConnectingActivity extends RootActivity implements OnClickL
                     // 增加手机客户端操作信息记录
                     int addCameraErrorCode = 0;
                     try {
-                        EzvizApplication.getOpenSDK().addDevice(serialNo, mVerifyCode);
+                        EZOpenSDK.getInstance().addDevice(serialNo, mVerifyCode);
 
 //                        mDeviceInfoEx = CameraMgtCtrl.addCamera(mSearchDevice.getSubSerial(), mVerifyCode);
 

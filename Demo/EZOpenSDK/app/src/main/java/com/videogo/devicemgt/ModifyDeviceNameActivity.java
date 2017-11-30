@@ -23,7 +23,6 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 
-import com.videogo.EzvizApplication;
 import com.videogo.RootActivity;
 import com.videogo.constant.IntentConsts;
 import com.videogo.device.PeripheralInfo;
@@ -237,7 +236,7 @@ public class ModifyDeviceNameActivity extends RootActivity implements View.OnCli
                 int errorCode = 0;
 
                 try {
-                    EzvizApplication.getOpenSDK().setDeviceName(mDeviceSerial, mDeviceNameString);
+                    getOpenSDK().setDeviceName(mDeviceSerial, mDeviceNameString);
                 } catch (BaseException e) {
                 	e.printStackTrace();
 

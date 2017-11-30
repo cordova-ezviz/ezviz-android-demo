@@ -59,6 +59,7 @@ import com.videogo.util.LogUtil;
 import com.videogo.util.Utils;
 import com.videogo.widget.AddCameraGuideDialog.QuitNow;
 import com.videogo.widget.TitleBar;
+import com.videogo.ExitActivity;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -186,6 +187,9 @@ public final class CaptureActivity extends RootActivity implements SurfaceHolder
         initTitleBar();
         findViews();
         setListener();
+
+
+        ExitActivity.getInstance().addActivity(this);
     }
 
     /**
@@ -480,7 +484,7 @@ public final class CaptureActivity extends RootActivity implements SurfaceHolder
     /**
      * A valid barcode has been found, so give an indication of success and show the results.
      * 
-     * @param rawResult
+     * @param
      *            The contents of the barcode.
      * @param barcode
      *            A greyscale bitmap of the camera data which was decoded.

@@ -9,11 +9,12 @@ package com.videogo.remoteplayback.list.querylist;
 
 import android.app.Activity;
 
-import com.videogo.EzvizApplication;
+
 import com.videogo.device.DeviceReportInfo;
 import com.videogo.errorlayer.ErrorInfo;
 import com.videogo.exception.BaseException;
 import com.videogo.exception.InnerException;
+import com.videogo.openapi.EZOpenSDK;
 import com.videogo.openapi.bean.EZDeviceRecordFile;
 import com.videogo.openapi.bean.resp.CloudPartInfoFile;
 import com.videogo.remoteplayback.list.RemoteListContant;
@@ -167,7 +168,7 @@ public class QueryPlayBackLocalListAsyncTask extends HikAsyncTask<String, Void, 
 
 		List<EZDeviceRecordFile> tmpList = null;
 		try {
-			tmpList = EzvizApplication.getOpenSDK().searchRecordFileFromDevice(deviceSerial,channelNo,
+			tmpList = EZOpenSDK.getInstance().searchRecordFileFromDevice(deviceSerial,channelNo,
 					startTime, endTime);
 		} catch (BaseException e) {
 			e.printStackTrace();

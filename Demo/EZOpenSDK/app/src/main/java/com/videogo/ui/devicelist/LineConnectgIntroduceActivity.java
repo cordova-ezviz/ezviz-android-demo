@@ -22,6 +22,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.TextView;
 
+import com.videogo.ExitActivity;
 import com.videogo.widget.TitleBar;
 
 import ezviz.ezopensdk.R;
@@ -46,6 +47,8 @@ public class LineConnectgIntroduceActivity extends Activity {
         tvIntroduce1 = (TextView) findViewById(R.id.tvIntroduce1);
         tvIntroduce2 = (TextView) findViewById(R.id.tvIntroduce2);
         initTitleBar();
+
+        ExitActivity.getInstance().addActivity(this);
 
         int fromPage = getIntent().getIntExtra(FROM_PAGE, 0);
         if (fromPage == FROM_PAGE_WIFI_CONFIG) {

@@ -24,7 +24,7 @@ import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.TextView;
 
-import com.videogo.EzvizApplication;
+
 import com.videogo.RootActivity;
 import com.videogo.alarm.AlarmLogInfoManager;
 import com.videogo.constant.Constant;
@@ -601,7 +601,7 @@ public class EZMessageActivity2 extends RootActivity implements VerifyCodeInput.
             }
 
             try {
-                result = EzvizApplication.getOpenSDK().getAlarmList(mDeviceSerial, pageStart, pageSize,mStartTime,
+                result = getOpenSDK().getAlarmList(mDeviceSerial, pageStart, pageSize,mStartTime,
                     mEndTime);
             }
             catch (BaseException e) {
@@ -770,7 +770,7 @@ public class EZMessageActivity2 extends RootActivity implements VerifyCodeInput.
                 }
                 
                 try {
-                    EzvizApplication.getOpenSDK().deleteAlarm(deleteIds);
+                    getOpenSDK().deleteAlarm(deleteIds);
                 }
                 catch (BaseException e) {
                     e.printStackTrace();
@@ -886,7 +886,7 @@ public class EZMessageActivity2 extends RootActivity implements VerifyCodeInput.
                 alarmIds.add(info.getAlarmId());
 
             try {
-                EzvizApplication.getOpenSDK().setAlarmStatus(alarmIds, EZAlarmStatus.EZAlarmStatusRead);
+                getOpenSDK().setAlarmStatus(alarmIds, EZAlarmStatus.EZAlarmStatusRead);
                 setAlarmRead(info);
                 return true;
             }
@@ -1023,7 +1023,7 @@ public class EZMessageActivity2 extends RootActivity implements VerifyCodeInput.
             }
             
             try {
-                EzvizApplication.getOpenSDK().setAlarmStatus(alarmIds, EZAlarmStatus.EZAlarmStatusRead);
+                getOpenSDK().setAlarmStatus(alarmIds, EZAlarmStatus.EZAlarmStatusRead);
                 for(String alarmId : alarmIds) {
                 	setAlarmRead(alarmId);
                 }

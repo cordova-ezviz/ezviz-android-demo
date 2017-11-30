@@ -42,6 +42,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.support.v4.content.LocalBroadcastManager;
 
+import com.videogo.RootActivity;
 import com.videogo.constant.Constant;
 import com.videogo.constant.IntentConsts;
 import com.videogo.devicemgt.EZDeviceSettingActivity;
@@ -85,7 +86,6 @@ import java.util.List;
 
 import ezviz.ezopensdk.R;
 
-import static com.videogo.EzvizApplication.getOpenSDK;
 
 
 /**
@@ -94,7 +94,7 @@ import static com.videogo.EzvizApplication.getOpenSDK;
  * @author xiaxingsuo
  * @data 2014-7-14
  */
-public class EZCameraListActivity extends Activity implements OnClickListener, SelectCameraDialog.CameraItemClick {
+public class EZCameraListActivity extends RootActivity implements OnClickListener, SelectCameraDialog.CameraItemClick {
     protected static final String TAG = "CameraListActivity";
     public final static int REQUEST_CODE = 100;
     public final static int RESULT_CODE = 101;

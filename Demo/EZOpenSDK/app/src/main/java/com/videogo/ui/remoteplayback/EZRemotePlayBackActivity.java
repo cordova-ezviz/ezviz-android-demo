@@ -56,7 +56,8 @@ import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.videogo.EzvizApplication;
+
+import com.videogo.RootActivity;
 import com.videogo.constant.Constant;
 import com.videogo.constant.IntentConsts;
 import com.videogo.errorlayer.ErrorInfo;
@@ -110,7 +111,7 @@ import ezviz.ezopensdk.R;
  * @author chenxingyf1
  * @data 2014-7-1
  */
-public class EZRemotePlayBackActivity extends Activity implements OnClickListener, SurfaceHolder.Callback,
+public class EZRemotePlayBackActivity extends RootActivity implements OnClickListener, SurfaceHolder.Callback,
         Handler.Callback, TimeScrollBarScrollListener, VerifyCodeInput.VerifyCodeInputListener {
     private static final String TAG = "EZRemotePlayBackActivity";
     //UI消息
@@ -1070,7 +1071,7 @@ public class EZRemotePlayBackActivity extends Activity implements OnClickListene
 
     private void handleSearchEZCloudFileSuccess(Calendar seletedTime) {
         if (mEZMediaPlayer == null) {
-            mEZMediaPlayer = EzvizApplication.getOpenSDK().createPlayer(mEZAlarmInfo.getDeviceSerial(),mEZAlarmInfo.getCameraNo());
+            mEZMediaPlayer = getOpenSDK().createPlayer(mEZAlarmInfo.getDeviceSerial(),mEZAlarmInfo.getCameraNo());
             if (mEZMediaPlayer == null)
                 return;
 
@@ -1137,7 +1138,7 @@ public class EZRemotePlayBackActivity extends Activity implements OnClickListene
             } else {
 
                 if (mEZMediaPlayer == null) {
-                    mEZMediaPlayer = EzvizApplication.getOpenSDK().createPlayer(mEZAlarmInfo.getDeviceSerial(),mEZAlarmInfo.getCameraNo());
+                    mEZMediaPlayer = getOpenSDK().createPlayer(mEZAlarmInfo.getDeviceSerial(),mEZAlarmInfo.getCameraNo());
                     if (mEZMediaPlayer == null)
                         return;
                     if (mEZAlarmInfo.getIsEncrypt() == 1) {
@@ -1168,7 +1169,7 @@ public class EZRemotePlayBackActivity extends Activity implements OnClickListene
     private void handleSearchCloudFileSuccess(Calendar seletedTime) {
 
         if (mEZMediaPlayer == null) {
-            mEZMediaPlayer = EzvizApplication.getOpenSDK().createPlayer(mEZAlarmInfo.getDeviceSerial(),mEZAlarmInfo.getCameraNo());
+            mEZMediaPlayer = getOpenSDK().createPlayer(mEZAlarmInfo.getDeviceSerial(),mEZAlarmInfo.getCameraNo());
             if (mEZMediaPlayer == null)
                 return;
             if (mEZAlarmInfo.getIsEncrypt() == 1) {
@@ -1611,7 +1612,7 @@ public class EZRemotePlayBackActivity extends Activity implements OnClickListene
                         starttime = mStartTime;
                         endtime = mEndTime;
                     }
-                    mCloudFileList = EzvizApplication.getOpenSDK().searchRecordFileFromCloud(mEZAlarmInfo.getDeviceSerial(),mEZAlarmInfo.getCameraNo(),starttime,endtime);
+                    mCloudFileList = getOpenSDK().searchRecordFileFromCloud(mEZAlarmInfo.getDeviceSerial(),mEZAlarmInfo.getCameraNo(),starttime,endtime);
                     sendMessage(MSG_SEARCH_CLOUD_FILE_SUCCUSS, 0, seletedTime);
                 } catch (BaseException e) {
                     e.printStackTrace();
@@ -1626,7 +1627,7 @@ public class EZRemotePlayBackActivity extends Activity implements OnClickListene
             @Override
             public void run() {
                 try {
-                    mEZCloudFileList = EzvizApplication.getOpenSDK().searchRecordFileFromCloud(mEZAlarmInfo.getDeviceSerial(),mEZAlarmInfo.getCameraNo(), mStartTime, mEndTime);
+                    mEZCloudFileList = getOpenSDK().searchRecordFileFromCloud(mEZAlarmInfo.getDeviceSerial(),mEZAlarmInfo.getCameraNo(), mStartTime, mEndTime);
                     LogUtil.debugLog(TAG, "searchEZCloudFileList ends: " + mEZCloudFileList);
                     sendMessage(MSG_SEARCH_CLOUD_FILE_SUCCUSS, 0, seletedTime);
                 } catch (BaseException e) {
@@ -1657,7 +1658,7 @@ public class EZRemotePlayBackActivity extends Activity implements OnClickListene
                     int size = 0;
 
                     LogUtil.i(TAG, "searchEZAlarmFile seletedTime:" + seletedTime.getTime());
-                    mEZDeviceFileList = EzvizApplication.getOpenSDK().searchRecordFileFromDevice(mEZAlarmInfo.getDeviceSerial(),mEZAlarmInfo.getCameraNo(), startTime, endTime);
+                    mEZDeviceFileList = getOpenSDK().searchRecordFileFromDevice(mEZAlarmInfo.getDeviceSerial(),mEZAlarmInfo.getCameraNo(), startTime, endTime);
                     if (mEZDeviceFileList != null && mEZDeviceFileList.size() > 0) {
                         size = mEZDeviceFileList.size();
                         LogUtil.i(TAG, "searchEZDeviceFileList size:" + size);
@@ -1680,7 +1681,7 @@ public class EZRemotePlayBackActivity extends Activity implements OnClickListene
                         LogUtil.debugLog(TAG, "no matching device record file for alarm");
                     }
 
-                    mEZCloudFileList = EzvizApplication.getOpenSDK().searchRecordFileFromCloud(mEZAlarmInfo.getDeviceSerial(),mEZAlarmInfo.getCameraNo(), startTime, endTime);
+                    mEZCloudFileList = getOpenSDK().searchRecordFileFromCloud(mEZAlarmInfo.getDeviceSerial(),mEZAlarmInfo.getCameraNo(), startTime, endTime);
                     if (mEZCloudFileList != null && mEZCloudFileList.size() > 0) {
                         size = mEZCloudFileList.size();
                         LogUtil.debugLog(TAG, "searchEZCloudFileList size:" + size);
@@ -1770,7 +1771,7 @@ public class EZRemotePlayBackActivity extends Activity implements OnClickListene
         }
 
         if (mEZMediaPlayer == null) {
-            mEZMediaPlayer = EzvizApplication.getOpenSDK().createPlayer(mEZAlarmInfo.getDeviceSerial(),mEZAlarmInfo.getCameraNo());
+            mEZMediaPlayer = getOpenSDK().createPlayer(mEZAlarmInfo.getDeviceSerial(),mEZAlarmInfo.getCameraNo());
             if (mEZMediaPlayer == null)
                 return;
             if (mEZAlarmInfo.getIsEncrypt() == 1){
