@@ -1,5 +1,3 @@
----
-
 ### ezvizsdk打包过程
 #### 1.新建一个android项目
 #### 2.新建一个library,命名为ezviz
@@ -18,6 +16,6 @@ dependencies {
 #### 9.点击androidstudio最右侧的gradle，双击ezviz/Tasks/build/assemblerelease进行打包。
 #### 10.在项目中的build/outputs/aar找到ezviz-release.aar文件，修改名称为ezvizsdk.aar。
 
----
-1、Android接入指南文档查看地址：http://open.ys7.com/doc/book/4.x/android-sdk.html
-2、对应api查看地址：http://open.ys7.com/doc/android
+
+>1、Android接入指南文档查看地址：http://open.ys7.com/doc/book/4.x/android-sdk.html
+>2、对应api查看地址：http://open.ys7.com/doc/android
